@@ -6,13 +6,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>about - Hexo</title>
+  <title>关于 - zyan</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="google" content="notranslate" />
   
   
-  <meta name="author" content="John Doe">
+  <meta name="author" content="zyan">
   <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="16x16">
   <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" sizes="180x180">
@@ -111,7 +111,7 @@
         enable: true
       },
       scrollbar: {
-        type: 'default'
+        type: 'simple'
       },
       notification: {
         enable: false,
@@ -127,6 +127,8 @@
     }
   </script>
 
+  
+    <script type="text/javascript" src="http://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script> <script type="text/javascript"> $webfont.load("body", "bb8486019d264b84b0443c43a6db02ac", "OPPOSans-M"); $webfont.draw(); </script>
   
 
   
@@ -154,7 +156,7 @@
         <i class="iconfont iconsearch j-navbar-search"></i>
       
     </div>
-    <div class="center">about</div>
+    <div class="center">关于</div>
     <div class="right">
       <i class="iconfont iconmenu j-navbar-menu"></i>
     </div>
@@ -192,49 +194,63 @@
   <main id="main">
   <div class="article-wrap">
     <div class="row container">
-      <div class="col-xl-3"></div>
-      <div class="col-xl-6"><article class="article">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-8"><article class="article">
   <div class="wrap">
     <section class="head">
-  <img src="/images/theme/post-image.jpg" draggable="false">
+  <img src="https://s2.loli.net/2022/02/22/zhBsk7vMd9pnOFK.jpg" draggable="false">
   <div class="head-mask">
-    <h1 class="head-title">about</h1>
+    <h1 class="head-title">关于</h1>
     <div class="head-info">
-      <span class="post-info-item"><i class="iconfont iconcalendar"></i>二月 21, 2022</span>
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>二月 22, 2022</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>0</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>5</span>
     </div>
   </div>
 </section>
     <section class="main">
       <section class="content">
         
-        
+        <p>建设中…</p>
+
       </section>
       <section class="extra">
         
-          <ul class="copyright">
-  
-    <li><strong>本文作者：</strong>John Doe</li>
-    <li><strong>本文链接：</strong><a href="http://example.com/about/index.html" title="http:&#x2F;&#x2F;example.com&#x2F;about&#x2F;index.html">http:&#x2F;&#x2F;example.com&#x2F;about&#x2F;index.html</a></li>
-    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
-  
-</ul>
-        
-        
-          <section class="donate">
-  <div id="qrcode-donate">
-    <img src="https://pic.izhaoo.com/alipay.jpg">
-  </div>
-  <div class="icon">
-    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
-    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
-  </div>
-</section>
         
         
         
       </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: 'a5bf4e51840a753f6321',
+      clientSecret: '5f6d66a8399eeca0ef8206239c40032e4e082ffa',
+      id: window.location.pathname,
+      repo: 'gitalk',
+      owner: 'zyan1226',
+      admin: 'zyan1226'
+    });
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
       
     </section>
   </div>
@@ -306,6 +322,10 @@
     <i class="iconfont iconcaret-up"></i>
   </div>
   
+  
+    <div class="scrollbar j-scrollbar">
+  <div class="scrollbar-current j-scrollbar-current"></div>
+</div>
   
   
     
@@ -379,6 +399,8 @@
   </script>
 
 
+
+  <script defer src='https://hm.baidu.com/hm.js?2bac3d80813084efd7f9788ca0682f2a'></script>
 
 
 

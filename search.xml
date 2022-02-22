@@ -1,21 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/02/21/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
+    <title>BigDecimal 常用计算方法与注意事项</title>
+    <url>/2020/07/15/Java/Java%E5%9F%BA%E7%A1%80/BigDecimal%20%E5%B8%B8%E7%94%A8%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
+    <content><![CDATA[<p><code>BigDecimal</code> 是 Java 提供的一个关于小数精确计算的类，其位于<code>java.math</code>包下。</p>
+<p>不同于基本数据类型，<code>BigDecimal</code>是调用相关方法来进行运算。因为其拥有非常精确的小数计算能力，所以比较适合用于财务相关的计算等等。但是，其运行效率是不及 <code>Float</code> 与 <code>Double</code> 的，要按照实际情况，运用在合理的地方。</p>
+<span id="more"></span>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
+<h2 id="对象初始化"><a href="#对象初始化" class="headerlink" title="对象初始化"></a>对象初始化</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDec</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//不建议使用</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDec</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-number">99.6</span>);<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
+<p>强烈建议使用 String 类型进行初始化对象，强烈不推荐使用 Double 类型。原因何在？我们来看一个小测试。</p>
+<p>执行下方代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">BigDecimal bigDecimal=<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">99.6<br></code></pre></td></tr></table></figure>
+
+<p>而执行下方代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">BigDecimal bigDecimal=<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-number">99.6</span>);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">99.599999999999994315658113919198513031005859375<br></code></pre></td></tr></table></figure>
+
+<p>问题立刻显现出来，使用 Double 型数据初始化 Bigdecimal 是不精确的，会损失精度。这不是 BigDecimal 的问题，而属于 Double 本身。在 IDEA 中，使用 Double 初始化时，则会“报黄”警告。<mark style="background-color:pink;">所以请务必使用 String 初始化 BigDecimal !</mark></p>
+<p><img    class="lazyload" data-original="https://i.loli.net/2020/07/15/iGtUM7VnseTyJSc.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">IDEA 警告</span></p>
+<h2 id="建议的数据库解决方案"><a href="#建议的数据库解决方案" class="headerlink" title="建议的数据库解决方案"></a>建议的数据库解决方案</h2><p>基于上一部分得到的结论，建议在数据库中使用<code> VARCHAR</code> 类型或者 <code>DECIMAL</code>，这里以 MySQL + MyBatis 为例。</p>
+<table>
+<thead>
+<tr>
+<th>数据库数据类型</th>
+<th>MyBatis 实体类数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VARCHAR</td>
+<td>String</td>
+</tr>
+<tr>
+<td>DECIMAL</td>
+<td>BigDecimal</td>
+</tr>
+</tbody></table>
+<h2 id="加减运算"><a href="#加减运算" class="headerlink" title="加减运算"></a>加减运算</h2><blockquote>
+<p>加减运算比较简单，使用 <code>add()</code> 与 <code>subtract()</code> 方法进行处理。</p>
+</blockquote>
+<h3 id="减法"><a href="#减法" class="headerlink" title="减法"></a>减法</h3><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">subtract</span> <span class="hljs-operator">=</span> bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(subtract.toString());<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">32.7<br>99.6<br></code></pre></td></tr></table></figure>
+
+<p>此处需要注意的是，<mark style="background-color:pink;">所有的运算方法在执行后并不会影响参与计算的数，他只会将计算结果返回！</mark></p>
+<p>你可以使用新的对象来接受，或者覆盖旧的对象。</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<h3 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h3><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">166.5<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="乘除运算"><a href="#乘除运算" class="headerlink" title="乘除运算"></a>乘除运算</h2><h3 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h3><p>使用 <code>multiply()</code>方法进行处理。</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.multiply(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">6663.24<br></code></pre></td></tr></table></figure>
+
+<h3 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h3><blockquote>
+<p>除法是比较特殊的一个运算，因为除数与被除数的关系，可能会造成结果为<code>无限循环小数</code>或<code>无限不循环小数</code>，为了解决这一问题你需要指定<code>小数保留方案</code>。</p>
+</blockquote>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;3&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">33.2<br></code></pre></td></tr></table></figure>
+
+<p>因为该运算结果不是<code>无限循环小数</code>，所以一切看起来都很 Nice ，但是当你稍稍改动一下，它就会“原形毕露”。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<p style="color:red;">
+    Exception in thread "main" java.lang.ArithmeticException: Non-terminating decimal expansion; no exact representable decimal result.
+    at java.math.BigDecimal.divide(BigDecimal.java:1690)
+    at ...
+<p>
+
+<p>我是谁？我在哪？我写的是什么BUG？我们来看关键字<code>Non-terminating decimal expansion</code>，翻译过来就是<code>无穷小数扩张</code>。看到这里，你是否已经明白问题所在。也就是上边所提到的，需要指定<code>小数保留方案</code>。</p>
+<p>改动一下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>),<span class="hljs-number">2</span>,BigDecimal.ROUND_DOWN);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">1.48<br></code></pre></td></tr></table></figure>
+
+<p>此时一切都已恢复往日的平静，那么到底是什么力量遏制住了可恶的 Exception 呢？细心的同学会发现在 <code>divide()</code>方法中多了两个参数，一个是<code>2</code>，一个是<code>BigDecimal.ROUND_DOWN</code>。其中，2是保留小数的位数，这个很容易理解。而<code>BigDecimal.ROUND_DOWN</code>又是什么东西呢？他是 BigDecimal 类中的小数保留方案常量，算上这一个，一共有八个方案常量，请看解析。</p>
+<table>
+<thead>
+<tr>
+<th>常量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BigDecimal.ROUND_UP</td>
+<td>舍入远离零的舍入模式。在丢弃非零部分之前始终增加数字(始终对非零舍弃部分前面的数字加1)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_DOWN</td>
+<td>接近零的舍入模式。在丢弃某部分之前始终不增加数字(从不对舍弃部分前面的数字加1，即截短)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_CEILING</td>
+<td>接近正无穷大的舍入模式。如果 BigDecimal 为正，则舍入行为与 ROUND_UP 相同；如果为负，则舍入行为与 ROUND_DOWN 相同。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_FLOOR</td>
+<td>接近负无穷大的舍入模式。如果 BigDecimal 为正，则舍入行为与 ROUND_DOWN 相同；如果为负，则舍入行为与 ROUND_UP 相同。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_UP</td>
+<td>向“最接近的”数字舍入，如果与两个相邻数字的距离相等，则为向上舍入的舍入模式。如果舍弃部分 &gt;&#x3D; 0.5，则舍入行为与 ROUND_UP 相同;否则舍入行为与 ROUND_DOWN 相同。注意，这是我们大多数人在小学时就学过的舍入模式(四舍五入)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_DOWN</td>
+<td>向“最接近的”数字舍入，如果与两个相邻数字的距离相等，则为上舍入的舍入模式。如果舍弃部分 &gt; 0.5，则舍入行为与 ROUND_UP 相同;否则舍入行为与 ROUND_DOWN 相同(五舍六入)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_EVE</td>
+<td>向“最接近的”数字舍入，如果与两个相邻数字的距离相等，则向相邻的偶数舍入。如果舍弃部分左边的数字为奇数，则舍入行为与 ROUND_HALF_UP 相同；如果为偶数，则舍入行为与 ROUND_HALF_DOWN 相同。此舍入模式也称为“银行家舍入法”，主要在美国使用。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_UNNECESSARY</td>
+<td>断言请求的操作具有精确的结果，因此不需要舍入。如果对获得精确结果的操作指定此舍入模式，则抛出ArithmeticException。</td>
+</tr>
+</tbody></table>
+<p>这么多的小数保留方案，其实常用的也不多，感兴趣的话，可以自己写个测试类玩玩。</p>
+<h2 id="比较大小"><a href="#比较大小" class="headerlink" title="比较大小"></a>比较大小</h2><blockquote>
+<p>比较大小也是需要调用方法的，使用<code>compareTo()</code>方法即可处理。</p>
+</blockquote>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>);<br><span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> a.compareTo(b);<br>System.out.println(i);<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">1<br></code></pre></td></tr></table></figure>
+
+<p><code>compareTo()</code>方法的返回值是一个<code>int</code>型的数据，以上方示例为例，请看解析</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>compareTo() 的返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a&gt;b</td>
+<td>1</td>
+</tr>
+<tr>
+<td>a&#x3D;b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>a&lt;b</td>
+<td>-1</td>
+</tr>
+</tbody></table>
+<p>当你要判断一个数的与0的关系（正负）时可以这样写</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;-99.6&quot;</span>);<br><span class="hljs-keyword">if</span> (a.compareTo(BigDecimal.ZERO) &gt; <span class="hljs-number">0</span>) &#123;<br>	<span class="hljs-comment">//a是正数</span><br>&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.compareTo(BigDecimal.ZERO) == <span class="hljs-number">0</span>)&#123;<br>	<span class="hljs-comment">//a==0</span><br>&#125;<span class="hljs-keyword">else</span> &#123;<br>	<span class="hljs-comment">//a是负数</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="去除无用的零"><a href="#去除无用的零" class="headerlink" title="去除无用的零"></a>去除无用的零</h3><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.12300000&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> a.stripTrailingZeros();<br>System.out.println(b.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">99.123<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java 基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何优雅的进行 Bean 注入</title>
+    <url>/2020/10/30/Spring/Spring%20%E5%9F%BA%E7%A1%80/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%BF%9B%E8%A1%8C%20Bean%20%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<p>不知道为什么，最近听到许多反对使用<code>Lombok</code>的声音，说什么影响代码可读性，具有侵入性。（弱弱的问一句，<code>Entity</code>要什么可读性？）这是我从上学的时候认识<code>Lombok</code>以来，第一次听到这样的声音。</p>
+<span id="more"></span>
+
+<p>在我看来，<code>Lombok</code>大大提高了开发效率。举个栗子，在我最近工作所开发的ERP系统中，由于行业的特殊性，一张表动辄七八十个字段，难道你会为<code>Entity</code>一个一个的去写<code>set</code>和<code>get</code>方法？或者说使用一些工具去生成？反正我打死都不会干的，毕竟人类只有越来越“懒”，才会想尽一切办法去提高生产力。</p>
+<p>这篇文章暂且不谈<code>Lombok</code>的优劣，最近我在爬帖子时发现了一个注解，可以优雅的在 <code>Spring</code> 项目中进行 <code>Bean</code> 注入：<code>@RequiredArgsConstructor</code>，这个注解则由<code>Lombok</code>提供。从这个单词来理解，大致就是，<code>必须的参数构造器</code>，那么这个注解又是怎么和<code>Bean</code>注入扯上关系的？向下看。</p>
+<h2 id="Bean注入乱象"><a href="#Bean注入乱象" class="headerlink" title="Bean注入乱象"></a>Bean注入乱象</h2><p><code>Spring</code>提供了三种注入模式，一种是<code>属性注入</code>(Filed injection)，一种是通过<code>setter</code>方法，一种是<code>构造器注入</code>。就目前情况来看，许多的项目看起来应该是这样的：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ARepo aRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> BRepo bRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CRepo cRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DRepo dRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样的使用方法本身没有什么问题，看起来还蛮整洁哈，可真实项目里却是这样的：</p>
+<p><img   class="lazyload" data-original="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p><code>Spring</code>从4.0开始，<strong>就 不 推 荐 使 用 属 性 注 入 模 式 了，</strong>原因是它可以让我们忽略掉一些代码可能变坏的隐患，同时这样的写法也使<code>IDEA</code>向你发出<code>黄色警告</code>!</p>
+<p>既然<code>Spring</code>推荐使用显式的<code>Setter</code>和<code>构造器方式</code>，那我们就切换一下实现方案。</p>
+<h2 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h2><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>或者……像这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ERepo eRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo,BRepo bRepo,CRepo cRepo</span><br><span class="hljs-params">                            ,DRepo dRepo,ERepo eRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>        <span class="hljs-built_in">this</span>.bRepo = bRepo;<br>        <span class="hljs-built_in">this</span>.cRepo = cRepo;<br>        <span class="hljs-built_in">this</span>.dRepo = dRepo;<br>        <span class="hljs-built_in">this</span>.eRepo = eRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>emmm，要是这样的话，我宁愿用<code>@Autowired</code>。</p>
+<p>当注入的<code>Bean</code>变多之后，构造器便显得超级臃肿，这个时候<code>@RequiredArgsConstructor</code>就派上了大用场，来看：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">final</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>嗯，这才是我们想要的样子，相信聪明的你已经明白了<code>@RequiredArgsConstructor</code>会在编译时帮你生成那个又臭又长的构造器，达到了<code>Bean</code>注入的目的。</p>
+<p>好了，如此优雅的注入，还不快拿去享用。</p>
 ]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 WebClient 进行异步请求</title>
+    <url>/2020/07/25/Spring/Spring%20%E7%9B%B8%E5%85%B3/%E4%BD%BF%E7%94%A8%20WebClient%20%E8%BF%9B%E8%A1%8C%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/</url>
+    <content><![CDATA[<p><code>Spring Reactive</code> 框架使用事件驱动模型，通过 Streams API 提供了组合异步逻辑的方法。与同步&#x2F;阻塞方法相比，它可以使用更少的线程和系统资源来处理更多的业务逻辑。</p>
+<p>与 <code>RestTemplate</code> 为每一个事件都新建一个线程不同， <code>WebClient</code> 为每一个事件创建一个“任务”，<code>Spring Reactive</code> 框架 将对这些“任务”进行队列处理，仅在收到适当的响应时才执行任务。</p>
+<span id="more"></span>
+
+<h3 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h3><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-webflux<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="异步GET请求"><a href="#异步GET请求" class="headerlink" title="异步GET请求"></a>异步<code>GET</code>请求</h3><p>该代码段位于多线程或者循环当中</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;127.0.0.1:8848/demoController&quot;</span>;<br><span class="hljs-comment">//发起请求</span><br>Mono&lt;String&gt; mono = WebClient.create()<br>        .get()<br>        .uri(url)<br>        .retrieve()<br>        .bodyToMono(String.class)<br>        .onErrorReturn(<span class="hljs-string">&quot;err&quot;</span>);<br><span class="hljs-comment">//异步处理 不等待响应，继续循环执行下一次请求，收到响应时回调该 lambada</span><br>mono.subscribe(jsonStr -&gt; &#123;<br>    log.info(jsonStr);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 相关</tag>
+      </tags>
   </entry>
 </search>

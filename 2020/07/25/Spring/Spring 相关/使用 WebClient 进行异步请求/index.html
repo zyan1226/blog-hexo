@@ -6,12 +6,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>categories - zyan</title>
+  <title>使用 WebClient 进行异步请求 - zyan</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="google" content="notranslate" />
   
-  
+  <meta name="description" content="Spring Reactive 框架使用事件驱动模型，...">
   <meta name="author" content="zyan">
   <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="16x16">
   <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="32x32">
@@ -156,7 +156,7 @@
         <i class="iconfont iconsearch j-navbar-search"></i>
       
     </div>
-    <div class="center">categories</div>
+    <div class="center">使用 WebClient 进行异步请求</div>
     <div class="right">
       <i class="iconfont iconmenu j-navbar-menu"></i>
     </div>
@@ -182,7 +182,7 @@
       </li><li class="menu-item">
         <a href="/tags/ " class="underline "> 标签</a>
       </li><li class="menu-item">
-        <a href="/categories/ " class="underline active"> 分类</a>
+        <a href="/categories/ " class="underline "> 分类</a>
       </li><li class="menu-item">
         <a href="/about/ " class="underline "> 关于</a>
       </li></ul>
@@ -192,13 +192,111 @@
   </div>
 </nav>
   <main id="main">
-  <section class="categories">
-    <header class="header">
-  <h1 class="header-title">分类</h1>
-  <p class="header-subtitle">共: 2 个</p>
-</header>
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li></ul>
-  </section>
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-8"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img src="https://desk-fd.zol-img.com.cn/t_s1440x900c5/g6/M00/02/02/ChMkKl_O70WIXhl_ABFWQWlCJDAAAGbDgBSqmYAEVZZ658.jpg" draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">使用 WebClient 进行异步请求</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>七月 25, 2020</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>760</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+          <p><p><code>Spring Reactive</code> 框架使用事件驱动模型，通过 Streams API 提供了组合异步逻辑的方法。与同步&#x2F;阻塞方法相比，它可以使用更少的线程和系统资源来处理更多的业务逻辑。</p>
+<p>与 <code>RestTemplate</code> 为每一个事件都新建一个线程不同， <code>WebClient</code> 为每一个事件创建一个“任务”，<code>Spring Reactive</code> 框架 将对这些“任务”进行队列处理，仅在收到适当的响应时才执行任务。</p></p>
+        
+        <h3 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-webflux<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="异步GET请求"><a href="#异步GET请求" class="headerlink" title="异步GET请求"></a>异步<code>GET</code>请求</h3><p>该代码段位于多线程或者循环当中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;127.0.0.1:8848/demoController&quot;</span>;<br><span class="hljs-comment">//发起请求</span><br>Mono&lt;String&gt; mono = WebClient.create()<br>        .get()<br>        .uri(url)<br>        .retrieve()<br>        .bodyToMono(String.class)<br>        .onErrorReturn(<span class="hljs-string">&quot;err&quot;</span>);<br><span class="hljs-comment">//异步处理 不等待响应，继续循环执行下一次请求，收到响应时回调该 lambada</span><br>mono.subscribe(jsonStr -&gt; &#123;<br>    log.info(jsonStr);<br>&#125;);<br></code></pre></td></tr></table></figure>
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>zyan</li>
+    <li><strong>本文链接：</strong><a href="http://example.com/2020/07/25/Spring/Spring%20%E7%9B%B8%E5%85%B3/%E4%BD%BF%E7%94%A8%20WebClient%20%E8%BF%9B%E8%A1%8C%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/index.html" title="http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;07&#x2F;25&#x2F;Spring&#x2F;Spring%20%E7%9B%B8%E5%85%B3&#x2F;%E4%BD%BF%E7%94%A8%20WebClient%20%E8%BF%9B%E8%A1%8C%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82&#x2F;index.html">http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;07&#x2F;25&#x2F;Spring&#x2F;Spring%20%E7%9B%B8%E5%85%B3&#x2F;%E4%BD%BF%E7%94%A8%20WebClient%20%E8%BF%9B%E8%A1%8C%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img src="https://pic.izhaoo.com/alipay.jpg">
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-%E7%9B%B8%E5%85%B3/" rel="tag">Spring 相关</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2020/10/30/Spring/Spring%20%E5%9F%BA%E7%A1%80/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%BF%9B%E8%A1%8C%20Bean%20%E6%B3%A8%E5%85%A5/"><i class="iconfont iconleft"></i>如何优雅的进行 Bean 注入</a>
+    <a href="/2020/07/15/Java/Java%E5%9F%BA%E7%A1%80/BigDecimal%20%E5%B8%B8%E7%94%A8%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">BigDecimal 常用计算方法与注意事项<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: 'a5bf4e51840a753f6321',
+      clientSecret: '5f6d66a8399eeca0ef8206239c40032e4e082ffa',
+      id: window.location.pathname,
+      repo: 'gitalk',
+      owner: 'zyan1226',
+      admin: 'zyan1226'
+    });
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven-%E4%BE%9D%E8%B5%96"><span class="toc-text">Maven 依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5GET%E8%AF%B7%E6%B1%82"><span class="toc-text">异步GET请求</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
 </main>
   
 

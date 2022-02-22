@@ -1,0 +1,612 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>BigDecimal 常用计算方法与注意事项 - zyan</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="BigDecimal 是 Java 提供的一个关于小数...">
+  <meta name="author" content="zyan">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="16x16">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" sizes="180x180">
+  <meta rel="mask-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'true',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: 'https://api.vvhan.com/api/bing?type=sj'
+        },
+        motto: {
+          default: '永远相信美好的事情即将发生',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'simple'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: true,
+        path: 'search.xml'
+      }
+    }
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script> <script type="text/javascript"> $webfont.load("body", "bb8486019d264b84b0443c43a6db02ac", "OPPOSans-M"); $webfont.draw(); </script>
+  
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+        <i class="iconfont iconsearch j-navbar-search"></i>
+      
+    </div>
+    <div class="center">BigDecimal 常用计算方法与注意事项</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/galleries/ " class="underline "> 摄影</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-8"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img src="https://desk-fd.zol-img.com.cn/t_s1440x900c5/g2/M00/0A/0F/ChMlWV7N022IW5JJAA81-oozPc0AAPg7wEicxIADzYS587.jpg" draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">BigDecimal 常用计算方法与注意事项</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>七月 15, 2020</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4696</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+          <p><p><code>BigDecimal</code> 是 Java 提供的一个关于小数精确计算的类，其位于<code>java.math</code>包下。</p>
+<p>不同于基本数据类型，<code>BigDecimal</code>是调用相关方法来进行运算。因为其拥有非常精确的小数计算能力，所以比较适合用于财务相关的计算等等。但是，其运行效率是不及 <code>Float</code> 与 <code>Double</code> 的，要按照实际情况，运用在合理的地方。</p></p>
+        
+        <h2 id="对象初始化"><a href="#对象初始化" class="headerlink" title="对象初始化"></a>对象初始化</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDec</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//不建议使用</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDec</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-number">99.6</span>);<br></code></pre></td></tr></table></figure>
+
+<p>强烈建议使用 String 类型进行初始化对象，强烈不推荐使用 Double 类型。原因何在？我们来看一个小测试。</p>
+<p>执行下方代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">BigDecimal bigDecimal=<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">99.6<br></code></pre></td></tr></table></figure>
+
+<p>而执行下方代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">BigDecimal bigDecimal=<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-number">99.6</span>);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">99.599999999999994315658113919198513031005859375<br></code></pre></td></tr></table></figure>
+
+<p>问题立刻显现出来，使用 Double 型数据初始化 Bigdecimal 是不精确的，会损失精度。这不是 BigDecimal 的问题，而属于 Double 本身。在 IDEA 中，使用 Double 初始化时，则会“报黄”警告。<mark style="background-color:pink;">所以请务必使用 String 初始化 BigDecimal !</mark></p>
+<p><img  src="https://i.loli.net/2020/07/15/iGtUM7VnseTyJSc.png"  ><span class="image-caption">IDEA 警告</span></p>
+<h2 id="建议的数据库解决方案"><a href="#建议的数据库解决方案" class="headerlink" title="建议的数据库解决方案"></a>建议的数据库解决方案</h2><p>基于上一部分得到的结论，建议在数据库中使用<code> VARCHAR</code> 类型或者 <code>DECIMAL</code>，这里以 MySQL + MyBatis 为例。</p>
+<table>
+<thead>
+<tr>
+<th>数据库数据类型</th>
+<th>MyBatis 实体类数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VARCHAR</td>
+<td>String</td>
+</tr>
+<tr>
+<td>DECIMAL</td>
+<td>BigDecimal</td>
+</tr>
+</tbody></table>
+<h2 id="加减运算"><a href="#加减运算" class="headerlink" title="加减运算"></a>加减运算</h2><blockquote>
+<p>加减运算比较简单，使用 <code>add()</code> 与 <code>subtract()</code> 方法进行处理。</p>
+</blockquote>
+<h3 id="减法"><a href="#减法" class="headerlink" title="减法"></a>减法</h3><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">subtract</span> <span class="hljs-operator">=</span> bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(subtract.toString());<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">32.7<br>99.6<br></code></pre></td></tr></table></figure>
+
+<p>此处需要注意的是，<mark style="background-color:pink;">所有的运算方法在执行后并不会影响参与计算的数，他只会将计算结果返回！</mark></p>
+<p>你可以使用新的对象来接受，或者覆盖旧的对象。</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<h3 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h3><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">166.5<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="乘除运算"><a href="#乘除运算" class="headerlink" title="乘除运算"></a>乘除运算</h2><h3 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h3><p>使用 <code>multiply()</code>方法进行处理。</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.multiply(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">6663.24<br></code></pre></td></tr></table></figure>
+
+<h3 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h3><blockquote>
+<p>除法是比较特殊的一个运算，因为除数与被除数的关系，可能会造成结果为<code>无限循环小数</code>或<code>无限不循环小数</code>，为了解决这一问题你需要指定<code>小数保留方案</code>。</p>
+</blockquote>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;3&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">33.2<br></code></pre></td></tr></table></figure>
+
+<p>因为该运算结果不是<code>无限循环小数</code>，所以一切看起来都很 Nice ，但是当你稍稍改动一下，它就会“原形毕露”。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<p style="color:red;">
+    Exception in thread "main" java.lang.ArithmeticException: Non-terminating decimal expansion; no exact representable decimal result.
+    at java.math.BigDecimal.divide(BigDecimal.java:1690)
+    at ...
+<p>
+
+<p>我是谁？我在哪？我写的是什么BUG？我们来看关键字<code>Non-terminating decimal expansion</code>，翻译过来就是<code>无穷小数扩张</code>。看到这里，你是否已经明白问题所在。也就是上边所提到的，需要指定<code>小数保留方案</code>。</p>
+<p>改动一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>),<span class="hljs-number">2</span>,BigDecimal.ROUND_DOWN);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1.48<br></code></pre></td></tr></table></figure>
+
+<p>此时一切都已恢复往日的平静，那么到底是什么力量遏制住了可恶的 Exception 呢？细心的同学会发现在 <code>divide()</code>方法中多了两个参数，一个是<code>2</code>，一个是<code>BigDecimal.ROUND_DOWN</code>。其中，2是保留小数的位数，这个很容易理解。而<code>BigDecimal.ROUND_DOWN</code>又是什么东西呢？他是 BigDecimal 类中的小数保留方案常量，算上这一个，一共有八个方案常量，请看解析。</p>
+<table>
+<thead>
+<tr>
+<th>常量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BigDecimal.ROUND_UP</td>
+<td>舍入远离零的舍入模式。在丢弃非零部分之前始终增加数字(始终对非零舍弃部分前面的数字加1)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_DOWN</td>
+<td>接近零的舍入模式。在丢弃某部分之前始终不增加数字(从不对舍弃部分前面的数字加1，即截短)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_CEILING</td>
+<td>接近正无穷大的舍入模式。如果 BigDecimal 为正，则舍入行为与 ROUND_UP 相同；如果为负，则舍入行为与 ROUND_DOWN 相同。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_FLOOR</td>
+<td>接近负无穷大的舍入模式。如果 BigDecimal 为正，则舍入行为与 ROUND_DOWN 相同；如果为负，则舍入行为与 ROUND_UP 相同。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_UP</td>
+<td>向“最接近的”数字舍入，如果与两个相邻数字的距离相等，则为向上舍入的舍入模式。如果舍弃部分 &gt;&#x3D; 0.5，则舍入行为与 ROUND_UP 相同;否则舍入行为与 ROUND_DOWN 相同。注意，这是我们大多数人在小学时就学过的舍入模式(四舍五入)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_DOWN</td>
+<td>向“最接近的”数字舍入，如果与两个相邻数字的距离相等，则为上舍入的舍入模式。如果舍弃部分 &gt; 0.5，则舍入行为与 ROUND_UP 相同;否则舍入行为与 ROUND_DOWN 相同(五舍六入)。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_EVE</td>
+<td>向“最接近的”数字舍入，如果与两个相邻数字的距离相等，则向相邻的偶数舍入。如果舍弃部分左边的数字为奇数，则舍入行为与 ROUND_HALF_UP 相同；如果为偶数，则舍入行为与 ROUND_HALF_DOWN 相同。此舍入模式也称为“银行家舍入法”，主要在美国使用。</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_UNNECESSARY</td>
+<td>断言请求的操作具有精确的结果，因此不需要舍入。如果对获得精确结果的操作指定此舍入模式，则抛出ArithmeticException。</td>
+</tr>
+</tbody></table>
+<p>这么多的小数保留方案，其实常用的也不多，感兴趣的话，可以自己写个测试类玩玩。</p>
+<h2 id="比较大小"><a href="#比较大小" class="headerlink" title="比较大小"></a>比较大小</h2><blockquote>
+<p>比较大小也是需要调用方法的，使用<code>compareTo()</code>方法即可处理。</p>
+</blockquote>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>);<br><span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> a.compareTo(b);<br>System.out.println(i);<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1<br></code></pre></td></tr></table></figure>
+
+<p><code>compareTo()</code>方法的返回值是一个<code>int</code>型的数据，以上方示例为例，请看解析</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>compareTo() 的返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a&gt;b</td>
+<td>1</td>
+</tr>
+<tr>
+<td>a&#x3D;b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>a&lt;b</td>
+<td>-1</td>
+</tr>
+</tbody></table>
+<p>当你要判断一个数的与0的关系（正负）时可以这样写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;-99.6&quot;</span>);<br><span class="hljs-keyword">if</span> (a.compareTo(BigDecimal.ZERO) &gt; <span class="hljs-number">0</span>) &#123;<br>	<span class="hljs-comment">//a是正数</span><br>&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.compareTo(BigDecimal.ZERO) == <span class="hljs-number">0</span>)&#123;<br>	<span class="hljs-comment">//a==0</span><br>&#125;<span class="hljs-keyword">else</span> &#123;<br>	<span class="hljs-comment">//a是负数</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="去除无用的零"><a href="#去除无用的零" class="headerlink" title="去除无用的零"></a>去除无用的零</h3><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.12300000&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> a.stripTrailingZeros();<br>System.out.println(b.toString());<br></code></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">99.123<br></code></pre></td></tr></table></figure>
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>zyan</li>
+    <li><strong>本文链接：</strong><a href="http://example.com/2020/07/15/Java/Java%E5%9F%BA%E7%A1%80/BigDecimal%20%E5%B8%B8%E7%94%A8%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html" title="http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;07&#x2F;15&#x2F;Java&#x2F;Java%E5%9F%BA%E7%A1%80&#x2F;BigDecimal%20%E5%B8%B8%E7%94%A8%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9&#x2F;index.html">http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;07&#x2F;15&#x2F;Java&#x2F;Java%E5%9F%BA%E7%A1%80&#x2F;BigDecimal%20%E5%B8%B8%E7%94%A8%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img src="https://pic.izhaoo.com/alipay.jpg">
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%9F%BA%E7%A1%80/" rel="tag">Java 基础</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2020/07/25/Spring/Spring%20%E7%9B%B8%E5%85%B3/%E4%BD%BF%E7%94%A8%20WebClient%20%E8%BF%9B%E8%A1%8C%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/"><i class="iconfont iconleft"></i>使用 WebClient 进行异步请求</a>
+    <a></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: 'a5bf4e51840a753f6321',
+      clientSecret: '5f6d66a8399eeca0ef8206239c40032e4e082ffa',
+      id: window.location.pathname,
+      repo: 'gitalk',
+      owner: 'zyan1226',
+      admin: 'zyan1226'
+    });
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">对象初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E8%AE%AE%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">建议的数据库解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%87%8F%E8%BF%90%E7%AE%97"><span class="toc-text">加减运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%8F%E6%B3%95"><span class="toc-text">减法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E6%B3%95"><span class="toc-text">加法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%98%E9%99%A4%E8%BF%90%E7%AE%97"><span class="toc-text">乘除运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%98%E6%B3%95"><span class="toc-text">乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%A4%E6%B3%95"><span class="toc-text">除法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E5%A4%A7%E5%B0%8F"><span class="toc-text">比较大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E6%97%A0%E7%94%A8%E7%9A%84%E9%9B%B6"><span class="toc-text">去除无用的零</span></a></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=894519210 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zhaoo "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:izhaoo@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+    <div class="scrollbar j-scrollbar">
+  <div class="scrollbar-current j-scrollbar-current"></div>
+</div>
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+    <div class="search">
+  <div class="search-container">
+    <div class="search-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <div class="search-input-wrapper">
+      <i class="search-input-icon iconfont iconsearch"></i>
+      <input class="search-input" type="search" id="search-input" placeholder="Search..." autofocus autocomplete="off"
+        autocorrect="off" autocapitalize="off">
+    </div>
+    <div class="search-output" id="search-output"></div>
+  </div>
+</div>
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script defer src='https://hm.baidu.com/hm.js?2bac3d80813084efd7f9788ca0682f2a'></script>
+
+
+
+
+
+
+
+
+
+
+
+</html>
