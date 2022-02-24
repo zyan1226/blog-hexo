@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>使用 WebClient 进行异步请求</title>
+    <url>/2020/07/25/Spring/SpringCorrelation/WebClient/</url>
+    <content><![CDATA[<p><code>Spring Reactive</code> 框架使用事件驱动模型，通过 Streams API 提供了组合异步逻辑的方法。与同步&#x2F;阻塞方法相比，它可以使用更少的线程和系统资源来处理更多的业务逻辑。</p>
+<p>与 <code>RestTemplate</code> 为每一个事件都新建一个线程不同， <code>WebClient</code> 为每一个事件创建一个“任务”，<code>Spring Reactive</code> 框架 将对这些“任务”进行队列处理，仅在收到适当的响应时才执行任务。</p>
+<span id="more"></span>
+
+<h3 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h3><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-webflux<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="异步GET请求"><a href="#异步GET请求" class="headerlink" title="异步GET请求"></a>异步<code>GET</code>请求</h3><p>该代码段位于多线程或者循环当中</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;127.0.0.1:8848/demoController&quot;</span>;<br><span class="hljs-comment">//发起请求</span><br>Mono&lt;String&gt; mono = WebClient.create()<br>        .get()<br>        .uri(url)<br>        .retrieve()<br>        .bodyToMono(String.class)<br>        .onErrorReturn(<span class="hljs-string">&quot;err&quot;</span>);<br><span class="hljs-comment">//异步处理 不等待响应，继续循环执行下一次请求，收到响应时回调该 lambada</span><br>mono.subscribe(jsonStr -&gt; &#123;<br>    log.info(jsonStr);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 相关</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何优雅的进行 Bean 注入</title>
     <url>/2020/10/30/Spring/SpringBase/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%BF%9B%E8%A1%8C%20Bean%20%E6%B3%A8%E5%85%A5/</url>
     <content><![CDATA[<p>不知道为什么，最近听到许多反对使用<code>Lombok</code>的声音，说什么影响代码可读性，具有侵入性。（弱弱的问一句，<code>Entity</code>要什么可读性？）这是我从上学的时候认识<code>Lombok</code>以来，第一次听到这样的声音。</p>
@@ -33,26 +53,6 @@
       </categories>
       <tags>
         <tag>Spring 基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用 WebClient 进行异步请求</title>
-    <url>/2020/07/25/Spring/SpringCorrelation/WebClient/</url>
-    <content><![CDATA[<p><code>Spring Reactive</code> 框架使用事件驱动模型，通过 Streams API 提供了组合异步逻辑的方法。与同步&#x2F;阻塞方法相比，它可以使用更少的线程和系统资源来处理更多的业务逻辑。</p>
-<p>与 <code>RestTemplate</code> 为每一个事件都新建一个线程不同， <code>WebClient</code> 为每一个事件创建一个“任务”，<code>Spring Reactive</code> 框架 将对这些“任务”进行队列处理，仅在收到适当的响应时才执行任务。</p>
-<span id="more"></span>
-
-<h3 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h3><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-webflux<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="异步GET请求"><a href="#异步GET请求" class="headerlink" title="异步GET请求"></a>异步<code>GET</code>请求</h3><p>该代码段位于多线程或者循环当中</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;127.0.0.1:8848/demoController&quot;</span>;<br><span class="hljs-comment">//发起请求</span><br>Mono&lt;String&gt; mono = WebClient.create()<br>        .get()<br>        .uri(url)<br>        .retrieve()<br>        .bodyToMono(String.class)<br>        .onErrorReturn(<span class="hljs-string">&quot;err&quot;</span>);<br><span class="hljs-comment">//异步处理 不等待响应，继续循环执行下一次请求，收到响应时回调该 lambada</span><br>mono.subscribe(jsonStr -&gt; &#123;<br>    log.info(jsonStr);<br>&#125;);<br></code></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>Spring 相关</tag>
       </tags>
   </entry>
   <entry>
