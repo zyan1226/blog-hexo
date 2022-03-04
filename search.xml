@@ -36,27 +36,7 @@
       </tags>
   </entry>
   <entry>
-    <title>使用 WebClient 进行异步请求</title>
-    <url>/2020/07/25/Spring/SpringCorrelation/WebClient/</url>
-    <content><![CDATA[<p><code>Spring Reactive</code> 框架使用事件驱动模型，通过 Streams API 提供了组合异步逻辑的方法。与同步&#x2F;阻塞方法相比，它可以使用更少的线程和系统资源来处理更多的业务逻辑。</p>
-<p>与 <code>RestTemplate</code> 为每一个事件都新建一个线程不同， <code>WebClient</code> 为每一个事件创建一个“任务”，<code>Spring Reactive</code> 框架 将对这些“任务”进行队列处理，仅在收到适当的响应时才执行任务。</p>
-<span id="more"></span>
-
-<h3 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h3><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-webflux<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="异步GET请求"><a href="#异步GET请求" class="headerlink" title="异步GET请求"></a>异步<code>GET</code>请求</h3><p>该代码段位于多线程或者循环当中</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;127.0.0.1:8848/demoController&quot;</span>;<br><span class="hljs-comment">//发起请求</span><br>Mono&lt;String&gt; mono = WebClient.create()<br>        .get()<br>        .uri(url)<br>        .retrieve()<br>        .bodyToMono(String.class)<br>        .onErrorReturn(<span class="hljs-string">&quot;err&quot;</span>);<br><span class="hljs-comment">//异步处理 不等待响应，继续循环执行下一次请求，收到响应时回调该 lambada</span><br>mono.subscribe(jsonStr -&gt; &#123;<br>    log.info(jsonStr);<br>&#125;);<br></code></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>Spring 相关</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BigDecimal 常用计算方法与注意事项</title>
+    <title>学会使用 BigDecimal</title>
     <url>/2020/07/15/Java/JavaBase/BigDecimal/</url>
     <content><![CDATA[<p><code>BigDecimal</code> 是 Java 提供的一个关于小数精确计算的类，其位于<code>java.math</code>包下。</p>
 <p>不同于基本数据类型，<code>BigDecimal</code>是调用相关方法来进行运算。因为其拥有非常精确的小数计算能力，所以比较适合用于财务相关的计算等等。但是，其运行效率是不及 <code>Float</code> 与 <code>Double</code> 的，要按照实际情况，运用在合理的地方。</p>
@@ -238,6 +218,26 @@
       </categories>
       <tags>
         <tag>Java 基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 WebClient 进行异步请求</title>
+    <url>/2020/07/25/Spring/SpringCorrelation/WebClient/</url>
+    <content><![CDATA[<p><code>Spring Reactive</code> 框架使用事件驱动模型，通过 Streams API 提供了组合异步逻辑的方法。与同步&#x2F;阻塞方法相比，它可以使用更少的线程和系统资源来处理更多的业务逻辑。</p>
+<p>与 <code>RestTemplate</code> 为每一个事件都新建一个线程不同， <code>WebClient</code> 为每一个事件创建一个“任务”，<code>Spring Reactive</code> 框架 将对这些“任务”进行队列处理，仅在收到适当的响应时才执行任务。</p>
+<span id="more"></span>
+
+<h3 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h3><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-webflux<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="异步GET请求"><a href="#异步GET请求" class="headerlink" title="异步GET请求"></a>异步<code>GET</code>请求</h3><p>该代码段位于多线程或者循环当中</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;127.0.0.1:8848/demoController&quot;</span>;<br><span class="hljs-comment">//发起请求</span><br>Mono&lt;String&gt; mono = WebClient.create()<br>        .get()<br>        .uri(url)<br>        .retrieve()<br>        .bodyToMono(String.class)<br>        .onErrorReturn(<span class="hljs-string">&quot;err&quot;</span>);<br><span class="hljs-comment">//异步处理 不等待响应，继续循环执行下一次请求，收到响应时回调该 lambada</span><br>mono.subscribe(jsonStr -&gt; &#123;<br>    log.info(jsonStr);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 相关</tag>
       </tags>
   </entry>
 </search>
