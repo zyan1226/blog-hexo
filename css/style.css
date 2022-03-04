@@ -1629,6 +1629,7 @@ body input {
   text-decoration: none;
 }
 .article .wrap .main .content img {
+  border-radius: 5px;
   display: block;
   margin: 0 auto;
 }
