@@ -2,9 +2,9 @@
   --color-background: #fff;
   --color-background-secondary: #f6f8fa;
   --color-background-rgb: 255, 255, 255;
-  --color-text: #33333d;
-  --color-text-secondary: #4e4e4e;
-  --color-text-third: #999;
+  --color-text: #18191b;
+  --color-text-secondary: #52555a;
+  --color-text-third: #a7abb3;
   --color-border: #eee;
   --background-image: url("/images/welcome-light.jpg");
   --loading-image: url("/images/theme/loading.gif");
@@ -74,7 +74,7 @@ body a {
   text-decoration: none;
 }
 body a:hover {
-  color: #ff3b00;
+  color: #e94328;
 }
 body a,
 body a:hover {
@@ -150,15 +150,15 @@ body input {
   transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
 }
 *::selection {
-  background: #ff3b00;
+  background: #e94328;
   color: #fff;
 }
 *::-moz-selection {
-  background: #ff3b00;
+  background: #e94328;
   color: #fff;
 }
 *::-webkit-selection {
-  background: #ff3b00;
+  background: #e94328;
   color: #fff;
 }
 .container {
@@ -878,7 +878,7 @@ body input {
 }
 @media (hover: hover) and (pointer: fine) {
   .fab:hover {
-    background-color: #ff3b00;
+    background-color: #e94328;
     background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
     cursor: pointer;
   }
@@ -1396,7 +1396,7 @@ body input {
   text-align: justify;
 }
 .search .search-container .search-output .search-result-list .search-result .search-keyword {
-  color: #ff3b00;
+  color: #e94328;
   font-style: normal;
 }
 .search .search-container .search-close {
@@ -1444,7 +1444,7 @@ body input {
   top: 10px;
   left: -28px;
   width: 100px;
-  background-color: #ff3b00;
+  background-color: #e94328;
   background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
   color: #fff;
   box-shadow: -3px 5px 6px -5px rgba(0,0,0,0.5);
@@ -1620,7 +1620,7 @@ body input {
   background-color: var(--color-background-secondary);
   padding: 2px 5px;
   border-radius: 2px;
-  color: #ff3b00;
+  color: #e94328;
 }
 .article .wrap .main .content a {
   text-decoration: underline;
@@ -1688,7 +1688,7 @@ body input {
   margin: 0 0 1em;
   padding: 15px 20px;
   background-color: var(--color-background-secondary);
-  border-left: 4px solid #ff3b00;
+  border-left: 4px solid #e94328;
 }
 .article .wrap .main .content blockquote p {
   margin: 0;
@@ -1697,7 +1697,7 @@ body input {
   margin-top: 50px;
 }
 .article .wrap .main .extra .copyright {
-  border-left: 4px solid #ff3b00;
+  border-left: 4px solid #e94328;
   background-color: var(--color-background-secondary);
   list-style: none;
   padding: 15px 20px;
@@ -1782,7 +1782,7 @@ body input {
 }
 .article .wrap .main .extra .tag-list .tag-list-item:hover {
   cursor: pointer;
-  background-color: #ff3b00;
+  background-color: #e94328;
 }
 .article .wrap .main .extra .tag-list .tag-list-item:hover a {
   color: #fff;
@@ -1805,7 +1805,7 @@ body input {
   text-align: center;
 }
 .article .wrap .main .comments .btn:hover {
-  background-color: #ff3b00;
+  background-color: #e94328;
   background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
   color: #fff;
   transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
@@ -1903,7 +1903,7 @@ body input {
   border-left: 3px solid transparent;
 }
 .toc-wrap .toc .toc-link.active {
-  color: #ff3b00;
+  color: #e94328;
   font-weight: bold;
 }
 .toc-wrap .toc .toc-child {
@@ -2013,7 +2013,7 @@ body input {
   margin-right: 10px;
 }
 .tags a:hover {
-  background-color: #ff3b00;
+  background-color: #e94328;
   color: #fff !important;
 }
 .galleries {

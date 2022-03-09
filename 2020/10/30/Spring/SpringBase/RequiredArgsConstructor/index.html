@@ -202,7 +202,7 @@
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>十月 30, 2020</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>2160</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>2166</span>
     </div>
   </div>
 </section>
@@ -217,7 +217,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ARepo aRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> BRepo bRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CRepo cRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DRepo dRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这样的使用方法本身没有什么问题，看起来还蛮整洁哈，可真实项目里却是这样的：</p>
-<p><img src="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png"></p>
+<p><img  src="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png"  ><span class="image-caption">真实项目截图</span></p>
 <p><code>Spring</code>从4.0开始，<strong>就 不 推 荐 使 用 属 性 注 入 模 式 了，</strong>原因是它可以让我们忽略掉一些代码可能变坏的隐患，同时这样的写法也使<code>IDEA</code>向你发出<code>黄色警告</code>!</p>
 <p>既然<code>Spring</code>推荐使用显式的<code>Setter</code>和<code>构造器方式</code>，那我们就切换一下实现方案。</p>
 <h2 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h2><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
@@ -249,7 +249,7 @@
 
         
   <nav class="nav">
-    <a></a>
+    <a href="/2022/03/04/Java/JavaBase/FunctionalProgramming/"><i class="iconfont iconleft"></i>Java 函数式编程</a>
     <a href="/2020/07/25/Spring/SpringCorrelation/WebClient/">使用 WebClient 进行异步请求<i class="iconfont iconright"></i></a>
   </nav>
 
@@ -309,22 +309,22 @@
         href="tencent://message/?Menu=yes&uin=1113882975 "
         target="_blank"
         class="footer-social-item"
-        onMouseOver="this.style.color= '#12B7F5'" 
-        onMouseOut="this.style.color='#33333D'">
-          <i class="iconfont  iconQQ "></i>
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  iconQQ"></i>
       </a><a 
         href="https://github.com/zyan1226 "
         target="_blank"
         class="footer-social-item"
-        onMouseOver="this.style.color= '#9f7be1'" 
-        onMouseOut="this.style.color='#33333D'">
-          <i class="iconfont  icongithub-fill "></i>
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  icongithub-fill"></i>
       </a><a 
         href="mailto:zyan1226@163.com "
         target="_blank"
         class="footer-social-item"
-        onMouseOver="this.style.color=#FF3B00" 
-        onMouseOut="this.style.color='#33333D'">
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
           <i class="iconfont  iconmail"></i>
       </a></div>
   
