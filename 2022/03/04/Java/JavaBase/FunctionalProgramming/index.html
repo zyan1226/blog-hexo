@@ -205,7 +205,7 @@
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>三月 04, 2022</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3208</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3202</span>
     </div>
   </div>
 </section>
@@ -216,7 +216,7 @@
 <p>长文警告！</p>
 </blockquote>
 <p>从 Java 8 开始，便拥有了函数式编程的能力。这个能力通俗来讲，就是可以把一个方法实现（也可简单的理解为代码片段）作为参数进行传递，并在适当的时候执行。</p>
-<p>Java 有内置的一些类或工具就使用到这个特性，例如整理集合时所使用的<code>stream()</code>,创建线程式</p>
+<p>Java 有内置的一些类或工具就使用到这个特性，例如整理集合时所使用的<code>stream()</code></p>
 <p>其实在真实的项目开发中，使用这个特性的人并不多。然而在一次偶然的开发过程中，让我深刻理解到这个特性的重要程度，以及它能为代码结构带来多大的优化空间。</p>
 <h2 id="为什么要使用它？"><a href="#为什么要使用它？" class="headerlink" title="为什么要使用它？"></a>为什么要使用它？</h2><h3 id="抛出问题"><a href="#抛出问题" class="headerlink" title="抛出问题"></a>抛出问题</h3><p>我们来看一个代码场景，现在有一个<code>Procedure</code>类，如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Procedure</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test1</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test2</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">2</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test3</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">3</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
