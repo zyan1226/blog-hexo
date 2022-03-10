@@ -205,7 +205,7 @@
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>三月 04, 2022</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3202</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3999</span>
     </div>
   </div>
 </section>
@@ -233,8 +233,57 @@
 <p>这个时候，函数式编程就像魔法一样，把这个类的代码结构优化到淋漓尽致。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Share</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">a</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//简写</span><br>        println(Procedure::test1);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">b</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//简写</span><br>        println(Procedure::test2);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">c</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//为了讲解，此处使用完整写法</span><br>        println((t)-&gt;&#123;<br>            <span class="hljs-keyword">return</span> Procedure.test3(t);<br>        &#125;);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">println</span><span class="hljs-params">(Function&lt;Integer, Integer&gt; func)</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> func.apply(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        a();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="Java-内置的函数式接口"><a href="#Java-内置的函数式接口" class="headerlink" title="Java 内置的函数式接口"></a>Java 内置的函数式接口</h2><h3 id="接口名称关键字整理"><a href="#接口名称关键字整理" class="headerlink" title="接口名称关键字整理"></a>接口名称关键字整理</h3><p>待编写…</p>
-<h2 id="如何自定义函数式接口"><a href="#如何自定义函数式接口" class="headerlink" title="如何自定义函数式接口"></a>如何自定义函数式接口</h2><p>待编写…</p>
+<h2 id="Java-内置的函数式接口"><a href="#Java-内置的函数式接口" class="headerlink" title="Java 内置的函数式接口"></a>Java 内置的函数式接口</h2><p>Java 是一种强类型语言，所以在函数式编程这一特性也不例外，它不能像 JS 那样可以将任何形式（这里指参数、返回值）的函数进行传递，而是必须在函数接受方显式的规定该函数的数据类型等细节。</p>
+<p>Java 利用泛型内置了一些可以灵活使用的函数式接口，你可以通过指定这些接口的泛型达到定制化的目的，来满足一般的开发需求。</p>
+<h3 id="接口名称关键字整理"><a href="#接口名称关键字整理" class="headerlink" title="接口名称关键字整理"></a>接口名称关键字整理</h3><p>由于内置的函数式接口较多，这里就不再一一列举，可以<a target="_blank" rel="noopener" href="https://www.runoob.com/java/java8-functional-interfaces.html">点击访问菜鸟教程网站</a>进行查阅</p>
+<p>不过我发现这些接口的名称和他们的场景用途存在一定的规律，特地整理一份关键字的对照表。</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>返回值</th>
+<th>参数</th>
+<th>执行</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Consumer</td>
+<td>无返回结果</td>
+<td>有参数</td>
+<td>accept方法</td>
+</tr>
+<tr>
+<td>Supplier</td>
+<td>有返回结果</td>
+<td>无参数</td>
+<td>get方法</td>
+</tr>
+<tr>
+<td>Function</td>
+<td>有返回结果</td>
+<td>有参数</td>
+<td>apply方法</td>
+</tr>
+<tr>
+<td>Predicate</td>
+<td>有返回结果，且结果为布尔值</td>
+<td>有参数</td>
+<td>test方法</td>
+</tr>
+<tr>
+<td>Operator</td>
+<td>有返回结果，且参数和返回结果数据类型相同</td>
+<td>有参数，且参数和返回结果数据类型相同</td>
+<td>apply方法</td>
+</tr>
+</tbody></table>
+<h2 id="如何自定义函数式接口"><a href="#如何自定义函数式接口" class="headerlink" title="如何自定义函数式接口"></a>如何自定义函数式接口</h2><p>当 Java 内置的函数式接口不能满足开发需求时（例如接口的参数数量很多），你可以自己定义一个函数式接口来使用。</p>
+<p>当然，出于个人喜好、项目管理等原因，你也可以在项目中完全使用自定义的函数式接口，放弃所有的内置函数式接口。</p>
+<p>下面就是一个标准的函数式接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test;<br><br><span class="hljs-meta">@FunctionalInterface</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">TestInterFace</span> &#123;<br><br>    Integer <span class="hljs-title function_">test</span><span class="hljs-params">(String a, String b, String c, String d)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此处需要注意的是，经过实践，<code>@FunctionalInterface</code>注解并不是必须的，出于习惯的原因，我都会加上该注解。</p>
+<p><strong>自定义函数式接口需要满足：有且只有一个未实现的方法。</strong></p>
 
       </section>
       <section class="extra">
