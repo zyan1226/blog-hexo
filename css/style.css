@@ -62,7 +62,7 @@
 }
 body {
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--color-text);
   font-family: Hiragino Sans GB;
   background-color: var(--color-background);
@@ -1421,6 +1421,7 @@ body input {
   box-shadow: 0 16px 32px 0 rgba(0,0,0,0.1);
 }
 .post .post-item .post-wrap {
+  border-radius: 10px;
   box-shadow: 0 5px 40px -1px rgba(2,10,18,0.11);
   background-color: var(--color-background);
 }
@@ -1457,6 +1458,7 @@ body input {
   padding-bottom: 66%;
 }
 .post .post-item .post-wrap .post-image img {
+  border-radius: 10px 10px 0 0;
   position: absolute;
   top: 0;
   left: 0;

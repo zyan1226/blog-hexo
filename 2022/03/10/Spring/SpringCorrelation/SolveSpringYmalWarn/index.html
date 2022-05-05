@@ -43,12 +43,12 @@
       
         
         
-<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/vs2015.min.css" name="highlight-style" mode="light">
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/github-dark-dimmed.min.css" name="highlight-style" mode="light">
 
       
         
         
-<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/vs2015.min.css" name="highlight-style" mode="dark">
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/github-dark-dimmed.min.css" name="highlight-style" mode="dark">
 
       
   
@@ -202,7 +202,7 @@
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>三月 10, 2022</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>112</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>1786</span>
     </div>
   </div>
 </section>
@@ -210,8 +210,21 @@
       <section class="content">
         
         <p>Spring 项目默认是使用<code>.properties</code>文件作为配置文件的，但是我们习惯上会更多的使用<code>.yml</code>文件，因为其可以体现出配置项的树形结构，可读性较强。</p>
-<h2 id="配置文件乱象"><a href="#配置文件乱象" class="headerlink" title="配置文件乱象"></a>配置文件乱象</h2><p>一般在配置数据源、端口号、服务名称这些配置</p>
-<p>待完成…</p>
+<h2 id="配置文件乱象"><a href="#配置文件乱象" class="headerlink" title="配置文件乱象"></a>配置文件乱象</h2><p>一般在配置数据源、端口号、服务名称这些配置时并不会出现黄色警告，但是一些自定义的配置项则会出现<code>一片黄色的骇人景象</code>。</p>
+<p><img  src="https://s2.loli.net/2022/04/26/HF7eK4CEIAsTL5y.png"  ><span class="image-caption">正常的项目配置</span></p>
+<p><img  src="https://s2.loli.net/2022/04/26/5Mxg2oscKYwlab8.png"  ><span class="image-caption">自定义的配置项</span></p>
+<p>虽然有警告，但是这并不是致命错误，因为你仍然可以正常的使用 <code>@Value(&quot;$&#123;test.a&#125;&quot;)</code> 来取值，但是作为有代码洁癖的人，这不能忍！而且 <code>@Value</code> 这种方式很容易因大意导致名称不一致，进而引起无法取值。</p>
+<h2 id="主角登场"><a href="#主角登场" class="headerlink" title="主角登场"></a>主角登场</h2><p>我们先去没有警告的配置项 <code>spring.datasource.url</code> 代码内部，看看是怎么写的，能不能找点蛛丝马迹。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ConfigurationProperties(</span><br><span class="hljs-meta">    prefix = &quot;spring.datasource&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceProperties</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanClassLoaderAware</span>, InitializingBean &#123;<br>    <span class="hljs-keyword">private</span> ClassLoader classLoader;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">generateUniqueName</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">DataSource</span>&gt; type;<br>    <span class="hljs-keyword">private</span> String driverClassName;<br>    <span class="hljs-keyword">private</span> String url;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String password;<br>    <span class="hljs-keyword">private</span> String jndiName;<br>    <span class="hljs-comment">//省略后部代码........</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>英语稍懂一些就会立刻注意到 <code>@ConfigurationProperties</code> 这个注解，因为它与我们此次要解决的问题非常相近，翻译过来就是 <code>配置属性</code>。</p>
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>没错，<code>@ConfigurationProperties</code> 注解就是解决配置文件警告的关键，那么他是如何使用的？</p>
+<h3 id="关系映射实体类"><a href="#关系映射实体类" class="headerlink" title="关系映射实体类"></a>关系映射实体类</h3><p>像使用 <code>MyBatisPlus</code> 那样，我们需要先创建一个 <code>关系映射实体类</code>，目的是告诉 Spring，服务启动时你把哪些配置项的值给我塞到这个实体类中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test.pojo.properties;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.NestedConfigurationProperty;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String aProperties;<br><br>    <span class="hljs-keyword">private</span> String b;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Boolean</span> <span class="hljs-variable">enable</span> <span class="hljs-operator">=</span> Boolean.FALSE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>需要注意这个实体类必须包含 <code>Setter</code> 和 <code>Getter</code> 方法，否则你将取不到值和无法取值。并且这个类必须使用 <code>@Component</code> 注解交由 Spring 管理或者在服务启动类上使用 <code>@ConfigurationPropertiesScan</code> 注解进行扫描。</p>
+<p><code>@ConfigurationProperties</code> 注解的 <code>prefix</code> 用于指定配置项前缀，可以使用 <code>.</code> 进行多级指定。不能使用驼峰命名，只能使用 <code>-</code> 进行分词。</p>
+<h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>待完成…</p>
 
       </section>
       <section class="extra">
@@ -275,7 +288,7 @@
           
   <aside class="toc-wrap">
     <h3 class="toc-title">文章目录：</h3>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B9%B1%E8%B1%A1"><span class="toc-text">配置文件乱象</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B9%B1%E8%B1%A1"><span class="toc-text">配置文件乱象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%A7%92%E7%99%BB%E5%9C%BA"><span class="toc-text">主角登场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">关系映射实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%96%E5%80%BC"><span class="toc-text">取值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a></li></ol></li></ol>
   </aside>
 
         
