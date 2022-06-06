@@ -185,7 +185,7 @@
         <a href="/about/ " class="underline "> 关于</a>
       </li></ul>
     
-      <div class="menu-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="/about">关于zyan</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
+      <div class="menu-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
     
   </div>
 </nav>
@@ -231,7 +231,7 @@
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">a-property:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
 
 <p>按照习惯，建议在 <code>.yml</code> 文件中使用 <code>-</code> 进行分词，在实体类中使用驼峰命名，不要担心这样无法取值，<code>Spring</code> 会帮你进行转化，当然，你也可以选择不这么做。</p>
-<h2 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h2><h3 id="多级配置"><a href="#多级配置" class="headerlink" title="多级配置"></a>多级配置</h3><p>多集配置只需要引入静态内部类即可</p>
+<h2 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h2><h3 id="多级配置"><a href="#多级配置" class="headerlink" title="多级配置"></a>多级配置</h3><p>多级配置只需要引入静态内部类即可</p>
 <h4 id="映射类写法"><a href="#映射类写法" class="headerlink" title="映射类写法"></a>映射类写法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Other other;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="yml-文件写法"><a href="#yml-文件写法" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other:</span><br>    <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>
@@ -335,7 +335,7 @@
           <i class="iconfont  iconmail"></i>
       </a></div>
   
-    <div class="footer-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="/about">关于zyan</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
+    <div class="footer-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
   
 </footer>
   
