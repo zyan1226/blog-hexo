@@ -98,7 +98,7 @@
         motto: {
           default: '永远相信美好的事情即将发生',
           typing: true,
-          api: 'https://v2.jinrishici.com/one.json',
+          api: 'https://v1.hitokoto.cn/?encode=text&c=d',
           data_contents: '["data","content"]'
         },
       },
@@ -218,14 +218,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;127.0.0.1:8848/demoController&quot;</span>;<br><span class="hljs-comment">//发起请求</span><br>Mono&lt;String&gt; mono = WebClient.create()<br>        .get()<br>        .uri(url)<br>        .retrieve()<br>        .bodyToMono(String.class)<br>        .onErrorReturn(<span class="hljs-string">&quot;err&quot;</span>);<br><span class="hljs-comment">//异步处理 不等待响应，继续循环执行下一次请求，收到响应时回调该 lambada</span><br>mono.subscribe(jsonStr -&gt; &#123;<br>    log.info(jsonStr);<br>&#125;);<br></code></pre></td></tr></table></figure>
       </section>
       <section class="extra">
-        
-          <ul class="copyright">
-  
-    <li><strong>本文作者：</strong>zyan</li>
-    <li><strong>本文链接：</strong><a href="http://blog.zyan1226.cn/2020/07/25/Spring/correlation/WebClient/index.html" title="http:&#x2F;&#x2F;blog.zyan1226.cn&#x2F;2020&#x2F;07&#x2F;25&#x2F;Spring&#x2F;correlation&#x2F;WebClient&#x2F;index.html">http:&#x2F;&#x2F;blog.zyan1226.cn&#x2F;2020&#x2F;07&#x2F;25&#x2F;Spring&#x2F;correlation&#x2F;WebClient&#x2F;index.html</a></li>
-    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
-  
-</ul>
         
         
         
