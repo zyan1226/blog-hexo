@@ -174,7 +174,7 @@
     <ul class="menu-content"><li class="menu-item">
         <a href="/ " class="underline "> 首页</a>
       </li><li class="menu-item">
-        <a href="/galleries/ " class="underline "> 摄影</a>
+        <a target="_blank" rel="noopener" href="https://unsplash.com/@zyan1226 " class="underline "> Unsplash</a>
       </li><li class="menu-item">
         <a href="/archives/ " class="underline "> 归档</a>
       </li><li class="menu-item">
@@ -202,7 +202,7 @@
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>三月 04, 2022</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3991</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4010</span>
     </div>
   </div>
 </section>
@@ -273,7 +273,7 @@
 </tbody></table>
 <h2 id="如何自定义函数式接口"><a href="#如何自定义函数式接口" class="headerlink" title="如何自定义函数式接口"></a>如何自定义函数式接口</h2><p>当 Java 内置的函数式接口不能满足开发需求时（例如接口的参数数量很多），你可以自己定义一个函数式接口来使用。</p>
 <p>当然，出于个人喜好、项目管理等原因，你也可以在项目中完全使用自定义的函数式接口，放弃所有的内置函数式接口。</p>
-<p>下面就是一个标准的函数式接口</p>
+<p>下面就是一个标准的函数式接口，看起来与普通的接口定义没有什么不同。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test;<br><br><span class="hljs-meta">@FunctionalInterface</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">TestInterFace</span> &#123;<br><br>    Integer <span class="hljs-title function_">test</span><span class="hljs-params">(String a, String b, String c, String d)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>此处需要注意的是，经过实践，<code>@FunctionalInterface</code>注解并不是必须的，出于习惯的原因，我都会加上该注解。</p>
