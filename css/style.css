@@ -1421,7 +1421,6 @@ body input {
   box-shadow: 0 16px 32px 0 rgba(0,0,0,0.1);
 }
 .post .post-item .post-wrap {
-  border-radius: 10px;
   box-shadow: 0 5px 40px -1px rgba(2,10,18,0.11);
   background-color: var(--color-background);
 }
@@ -1458,7 +1457,6 @@ body input {
   padding-bottom: 66%;
 }
 .post .post-item .post-wrap .post-image img {
-  border-radius: 10px 10px 0 0;
   position: absolute;
   top: 0;
   left: 0;
@@ -1514,7 +1512,7 @@ body input {
 }
 @media (min-width: 1200px) {
   .article-wrap .container {
-    max-width: calc(800px * 12 / 6);
+    max-width: calc(650px * 12 / 6);
   }
 }
 .article .wrap {
@@ -1835,7 +1833,7 @@ body input {
 }
 @media (min-width: 1200px) {
   .article-wrap--pure .container {
-    max-width: 800px;
+    max-width: 650px;
   }
 }
 .article-wrap--pure .article .wrap {
