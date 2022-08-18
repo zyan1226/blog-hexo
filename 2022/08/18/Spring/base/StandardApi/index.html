@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>相对规范的服务API应如何实现 - zyan</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="
+标准规范的接口可以降低前后端开发人员之间的沟通成本，...">
+  <meta name="author" content="zyan">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="16x16">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" sizes="180x180">
+  <meta rel="mask-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/github-dark-dimmed.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/github-dark-dimmed.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'true',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '愿你我既可以朝九晚五，又能够浪迹天涯',
+          typing: true,
+          api: '',
+          data_contents: ''
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'normal'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: true,
+        path: '/search.xml'
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+        <i class="iconfont iconsearch j-navbar-search"></i>
+      
+    </div>
+    <div class="center">相对规范的服务API应如何实现</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a target="_blank" rel="noopener" href="https://unsplash.com/@zyan1226 " class="underline "> Unsplash</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-8"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img src="https://desk-fd.zol-img.com.cn/t_s1920x1080c5/g6/M00/01/0C/ChMkKV-Xuf6IT4m_AA8fYkeAv4UAAEZhgM1xgQADx96846.jpg" draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">相对规范的服务API应如何实现</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>八月 18, 2022</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>10406</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <blockquote>
+<p>标准规范的接口可以降低前后端开发人员之间的沟通成本，并且能够降低后端服务自身的后期维护难度。</p>
+</blockquote>
+<h1 id="请求与响应"><a href="#请求与响应" class="headerlink" title="请求与响应"></a>请求与响应</h1><p>请求与响应参数是前后端开发人员对接的重要关注点，如果后端 API 不能向前端（甚至是自己）清晰的传达<strong>我接收什么，我返回什么</strong>的问题，那么对于双方来说，这都是一种灾难。</p>
+<h2 id="通用的-ApiResult"><a href="#通用的-ApiResult" class="headerlink" title="通用的 ApiResult"></a>通用的 <code>ApiResult</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiResult</span>&lt;T&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">2747440445733983051L</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 状态</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> Integer status;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String msg;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 响应数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> T payload;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 程序异常信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String exception;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这是一个简单的<code>ApiResult</code>示例，你所开发的每一个接口响应参数都应该是它，它是<strong>处于顶层的响应参数结构</strong>，通过指定不同的泛型适应各个接口的需求。各个参数作用如下:</p>
+<ul>
+<li>status <strong>状态码</strong>，用不同的数字表示当前接口处理完成后的结果状态。请不要与 Http 的状态混为一谈，我们不希望直接使用 Http 的状态来表示。 Http 的状态每次请求都应该是 200 的，处理的结果应由响应参数来体现。</li>
+<li>msg <strong>信息</strong>，后端服务提示用户消息的主要途径，因为许多的提示信息（正确或错误）都是在后端程序执行过程中才会出现。一般这个信息前端需要使用弹窗、横幅或其他手段去传达给用户的。</li>
+<li>payload <strong>响应数据</strong>，这个参数可以是任何数据类型，它是接口响应的具体业务数据。</li>
+<li>exception <strong>程序异常信息</strong>，结合自己的开发经验，觉得需要这样一个参数来帮助开发者更快的定位问题。例如发生某个异常，这个参数可以是该异常的具体信息<code>e.getMessage()</code>，所以开发人员只需通过浏览器开发者工具就能找到发生异常的原因。注意这个信息是不能传达给用户的！</li>
+</ul>
+<p>可以根据自己的习惯与命名这些参数，也可以为<code>ApiResult</code>扩展一些常用的方法，使得接口在构建响应参数时更加方便。</p>
+<h2 id="状态码枚举"><a href="#状态码枚举" class="headerlink" title="状态码枚举"></a>状态码枚举</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ApiStatusEnum</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 成功</span><br><span class="hljs-comment">     */</span><br>    SUCCESS(<span class="hljs-number">200</span>, <span class="hljs-string">&quot;处理成功&quot;</span>),<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 未授权（登录信息有误，需要重新登录）</span><br><span class="hljs-comment">     */</span><br>    UNAUTHORIZED(<span class="hljs-number">401</span>, <span class="hljs-string">&quot;未授权（登录信息有误 需要重新登录）&quot;</span>),<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 无操作权限</span><br><span class="hljs-comment">     */</span><br>    NO_PERMISSIONS(<span class="hljs-number">403</span>, <span class="hljs-string">&quot;无操作权限&quot;</span>),<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 失败</span><br><span class="hljs-comment">     */</span><br>    FAIL(<span class="hljs-number">500</span>, <span class="hljs-string">&quot;处理失败&quot;</span>);<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 状态码</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Integer status;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 提示消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String msg;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这是一个状态码枚举示例，它的<code>status</code>最终会体现在<code>ApiResult</code>的<code>status</code>中，前端得以根据不同的状态码进行逻辑处理，可以根据业务需要进行添加。可以参考 http 标准的状态码列举，但是一般与业务相近的 http 状态码少之又少，所以<strong>按照数字顺序不断自增列举</strong>的方式也是可取的。</p>
+<h2 id="使用实体类声明请求与响应参数"><a href="#使用实体类声明请求与响应参数" class="headerlink" title="使用实体类声明请求与响应参数"></a>使用实体类声明请求与响应参数</h2><p><strong>一个优秀的 API 接口，是不需要翻阅具体代码就能知道它的请求与响应参数的。</strong></p>
+<p>不知道有多少人喜欢使用<code>Map</code>或者类似于<code>Map</code>的类去接收和响应数据，甚至是使用<code>String</code>搭配一些 Json 工具去处理。这是非常愚蠢的操作。当然，爽是真的爽，但是这样的爽非常自私。对于调用者<sub>1</sub>来说，这样的的接口就像是一个黑盒子，必须翻阅具体的代码才能看到它接收什么、返回什么。可是他只想调用一下这个接口，至于里边怎么做的他不需要关心。这合理吗？这一点都不合理！</p>
+<p>使用实体类声明就能很好的避免这个问题，因为它能够严格规定这个接口的请求与返回，不是<code>Map</code>、<code>String</code>这样的“来者不拒“。</p>
+<p>[1] 调用者：在微服务架构下，许多接口不仅向前端提供，也会向其他服务提供，此处的调用者指后端开发人员。</p>
+<h3 id="如何管理这些实体类"><a href="#如何管理这些实体类" class="headerlink" title="如何管理这些实体类"></a>如何管理这些实体类</h3><p>个人经验，觉得<strong>每一个接口都应该拥有自己独立的参数实体类</strong>。</p>
+<p>一些人喜欢使用<code>DTO</code>和<code>VO</code>作为后缀命名接口的参数，我个人更喜欢使用<code>Req</code>和<code>Res</code>作为后缀，也向你推荐使用这种方式，因为它更加的贴切、一目了然。</p>
+<p>举一个栗子🌰，有一个分页查询用户信息的接口、还有一个新增用户信息的接口，那么它的参数实体类位置以及命名应该像下面这个样子:</p>
+<hr>
+<ul>
+<li>controller<ul>
+<li>UserController.java <code>/user</code><ul>
+<li><code>/pageList</code>接口，方法名为<code>pageList</code></li>
+<li><code>/add</code> 接口，方法名为<code>add</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>mapper</li>
+<li>pojo<ul>
+<li>dto<ul>
+<li>user<ul>
+<li>pagelist<ul>
+<li>UserPageListReq.java</li>
+<li>UserPageListRes.java</li>
+</ul>
+</li>
+<li>add<ul>
+<li>UserAddReq.java</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>entity</li>
+<li>properties</li>
+<li>redis</li>
+</ul>
+</li>
+<li>service</li>
+<li>utils</li>
+</ul>
+<hr>
+<p>先别急着骂！这样去管理这些实体类的确目录层级较多，比较麻烦。但是<strong>规范与效率两件事本来就是不可兼得的</strong>，在很多时候，我自己还是比较偏向于规范的。</p>
+<p>这样做有什么好处呢，首先实体类的名称变得有迹可循、有规可依。其次接口参数实体类所在<code>dto</code>包下的目录和接口是一一对应的，有利于你看到接口参数实体类就能很快定位到使用它的接口，看到接口就能很快定位到它的参数实体类。所以<strong>今日所谓的麻烦是为了以后不会遇到更多的麻烦</strong>。</p>
+<h1 id="推荐使用-Swagger"><a href="#推荐使用-Swagger" class="headerlink" title="推荐使用 Swagger"></a>推荐使用 Swagger</h1><p>Swagger 能够自动生成接口文档，可以交给前端同事 Swagger 地址作为接口对接依据，开展工作。也可以使用其进行快速的接口调用，进行接口自测。</p>
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="添加依赖并启用"><a href="#添加依赖并启用" class="headerlink" title="添加依赖并启用"></a>添加依赖并启用</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>SpringBoot 启动类上添加 <code>@EnableOpenApi</code> 注解</strong></p>
+<h3 id="创建-SwaggerProperties"><a href="#创建-SwaggerProperties" class="headerlink" title="创建 SwaggerProperties"></a>创建 <code>SwaggerProperties</code></h3><p>通过配置在<code>yml</code>文件中的<code>enabled</code>参数来控制不同环境下Swagger是否开启。关于<code>yml</code>文件与<code>@ConfigurationProperties</code>可以参考另一篇文章<a href="/2022/03/10/Spring/correlation/SolveYmalWarn/">解决 Spring 配置文件警告</a>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;swagger&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SwaggerProperties</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 是否启用 Swagger，默认关闭</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Boolean</span> <span class="hljs-variable">enabled</span> <span class="hljs-operator">=</span> Boolean.FALSE;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h3 id="创建-SwaggerConfig"><a href="#创建-SwaggerConfig" class="headerlink" title="创建 SwaggerConfig"></a>创建 <code>SwaggerConfig</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SwaggerConfig</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> SwaggerProperties swaggerProperties;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> Docket <span class="hljs-title function_">createRestApi</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Docket</span>(DocumentationType.OAS_30)<br>                .enable(swaggerProperties.getEnabled())<br>                .apiInfo(apiInfo())<br>                .select()<br>                <span class="hljs-comment">//指定需要被 Swagger 扫描到的包名</span><br>                .apis(RequestHandlerSelectors.basePackage(<span class="hljs-string">&quot;com.xxxxx.xxxx.controller&quot;</span>))<br>                .paths(PathSelectors.any())<br>                .build();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 创建该API的基本信息（这些基本信息会展现在文档页面中）</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> ApiInfo</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> ApiInfo <span class="hljs-title function_">apiInfo</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiInfoBuilder</span>()<br>                .title(<span class="hljs-string">&quot;xxx项目&quot;</span>)<br>                .description(<span class="hljs-string">&quot;&quot;</span>)<br>                .termsOfServiceUrl(<span class="hljs-string">&quot;&quot;</span>)<br>                .version(<span class="hljs-string">&quot;1.0&quot;</span>)<br>                .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>项目启动后就可以通过 <code>&#123;服务根路径&#125;/swagger-ui/</code> 去访问文档了，一定要注意，最后的反斜杠是必须的，否则无法访问。</p>
+<h3 id="Api"><a href="#Api" class="headerlink" title="@Api"></a><code>@Api</code></h3><p><code>@Api</code>是<strong>放置在<code>Controller</code>类上</strong>的，例如用户的<code>UserController</code>可以这样去写：<code>@Api(tags = &quot;User-用户信息相关接口&quot;)</code></p>
+<h3 id="ApiOperation"><a href="#ApiOperation" class="headerlink" title="@ApiOperation"></a><code>@ApiOperation</code></h3><p><code>@ApiOperation</code>是<strong>放置在具体接口上</strong>的，例如用户的<code>/pageList</code>接口可以这样去写：<code>@ApiOperation(value = &quot;分页查询用户信息&quot;)</code></p>
+<h3 id="ApiModel"><a href="#ApiModel" class="headerlink" title="@ApiModel"></a><code>@ApiModel</code></h3><p><code>@ApiModel</code>是<strong>放置在请求或响应实体类上</strong>的，例如分页查询用户信息接口请求参数可以这样写：<code>@ApiModel(description = &quot;分页查询用户信息接口请求参数&quot;)</code></p>
+<h3 id="ApiModelProperty"><a href="#ApiModelProperty" class="headerlink" title="@ApiModelProperty"></a><code>@ApiModelProperty</code></h3><p><code>@ApiModelProperty</code>是<strong>放置在请求或响应实体类的属性上</strong>的，例如保存用户信息接口请求参数的年龄属性可以这样写：<code>    @ApiModelProperty(value = &quot;年龄&quot;, required = true)</code></p>
+<p>其中的<code>required</code>可以指定是否为必传字段，为 <code>true</code> 时文档中会为该属性添加红色星号，为 <code>true</code> 时可以忽略不写，例如<code>@ApiModelProperty(&quot;年龄&quot;)</code>，<strong>注意，他并不会帮你进行参数校验！</strong></p>
+<h2 id="既然用了就落实下去"><a href="#既然用了就落实下去" class="headerlink" title="既然用了就落实下去"></a>既然用了就落实下去</h2><p>为什么会说既然用了就落实下去？我遇到很多的项目，用到了 Swagger，一些接口有他的影子，一些接口又没有他，前后端对接还是跟之前一样口头传达。所以，你要它有何用？</p>
+<h1 id="请求参数校验"><a href="#请求参数校验" class="headerlink" title="请求参数校验"></a>请求参数校验</h1><p>使用<code>org.springframework.validation.annotation</code>包下的<code>@Validated</code>对请求参数进行合法性校验。</p>
+<p>因SpringBoot版本不同，可能需要添加相应的依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>以上文的保存用户信息接口请求参数的年龄属性为例，你可以这样做：</p>
+<p>接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/add&quot;)</span><br><span class="hljs-meta">@ApiOperation(value = &quot;保存用户信息&quot;)</span><br><span class="hljs-keyword">public</span> ApiResult&lt;?&gt; add(<span class="hljs-meta">@RequestBody</span> <span class="hljs-meta">@Validated</span> UserAddReq req) &#123;<br>    userService.add(req);<br>    <span class="hljs-keyword">return</span> ApiResult.success();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>请求参数实体类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> javax.validation.constraints.NotNull;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ApiModel(description = &quot;保存用户信息请求参数&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserAddReq</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> -<span class="hljs-number">2749806305785349883L</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 年龄</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@NotNull(message = &quot;年龄不允许为空&quot;)</span><br>    <span class="hljs-meta">@ApiModelProperty(value = &quot;年龄&quot;, required = true)</span><br>    <span class="hljs-keyword">private</span> Integer age;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过<code>@NotNull</code>来指定<code>age</code>字段不允许为<code>null</code>，除此之外，还有很多的校验注解可以使用，可以<a target="_blank" rel="noopener" href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/constraints/package-summary.html">点击跳转查阅更多</a></p>
+<p>校验不通过时，程序将会抛出异常来阻止继续运行！将在下文中说明如何优雅的处理校验不通过时的错误。</p>
+<h1 id="全局异常处理"><a href="#全局异常处理" class="headerlink" title="全局异常处理"></a>全局异常处理</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sincland.insurance.partner.config;<br><br><span class="hljs-keyword">import</span> com.sincland.insurance.partner.exception.BusinessException;<br><span class="hljs-keyword">import</span> com.sincland.insurance.partner.pojo.other.ApiResult;<br><span class="hljs-keyword">import</span> org.apache.commons.lang3.ObjectUtils;<br><span class="hljs-keyword">import</span> org.slf4j.Logger;<br><span class="hljs-keyword">import</span> org.slf4j.LoggerFactory;<br><span class="hljs-keyword">import</span> org.springframework.http.converter.HttpMessageNotReadableException;<br><span class="hljs-keyword">import</span> org.springframework.validation.BindingResult;<br><span class="hljs-keyword">import</span> org.springframework.validation.FieldError;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.MethodArgumentNotValidException;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.ExceptionHandler;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestControllerAdvice;<br><br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 异常处理</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@RestControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExceptionHandlerConfig</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(<span class="hljs-built_in">this</span>.getClass());<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 处理其他所有异常</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> req 请求参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> e   异常信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> ApiResult</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ExceptionHandler(value = Exception.class)</span><br>    <span class="hljs-keyword">public</span> ApiResult&lt;?&gt; exceptionHandler(HttpServletRequest req, Exception e) &#123;<br>        String msg;<br>        <span class="hljs-keyword">if</span> (ObjectUtils.isNotEmpty(e.getCause())) &#123;<br>            msg = e.getCause().getMessage();<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            msg = e.getMessage();<br>        &#125;<br>        log.error(<span class="hljs-string">&quot;接口:&#123;&#125; 发生运行时异常:&#123;&#125;&quot;</span>, req.getRequestURI(), msg);<br>        e.printStackTrace();<br>        <span class="hljs-keyword">return</span> ApiResult.exception(msg);<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 校验参数异常</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> req HttpServletRequest</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> e   异常信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> ApiResult</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ExceptionHandler(value = MethodArgumentNotValidException.class)</span><br>    <span class="hljs-keyword">public</span> ApiResult&lt;?&gt; handleMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException e) &#123;<br>        <span class="hljs-type">BindingResult</span> <span class="hljs-variable">bindingResult</span> <span class="hljs-operator">=</span> e.getBindingResult();<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-string">&quot;请求参数校验不通过: &quot;</span>);<br>        <span class="hljs-keyword">for</span> (FieldError fieldError : bindingResult.getFieldErrors()) &#123;<br>            msg.append(fieldError.getField()).append(<span class="hljs-string">&quot;:&quot;</span>).append(fieldError.getDefaultMessage()).append(<span class="hljs-string">&quot;，&quot;</span>);<br>        &#125;<br>        msg.replace(msg.length() - <span class="hljs-number">1</span>, msg.length(), <span class="hljs-string">&quot;&quot;</span>);<br>        log.error(<span class="hljs-string">&quot;接口:&#123;&#125; &#123;&#125;&quot;</span>, req.getRequestURI(), msg);<br>        <span class="hljs-keyword">return</span> ApiResult.exception(msg.toString());<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 处理业务异常</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> req 请求参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> e   异常信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> ApiResult</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ExceptionHandler(value = BusinessException.class)</span><br>    <span class="hljs-keyword">public</span> ApiResult&lt;?&gt; businessExceptionHandler(HttpServletRequest req, BusinessException e) &#123;<br>        log.error(<span class="hljs-string">&quot;接口:&#123;&#125; 发生业务性异常:&#123;&#125;&quot;</span>, req.getRequestURI(), e.getMessage());<br>        <span class="hljs-keyword">return</span> e.getApiResultIsException() ? ApiResult.exception(e.getStatus(), e.getMessage())<br>                : ApiResult.fail(e.getStatus(), e.getMessage());<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 处理空指针异常</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> req 请求参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> e   异常信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> ApiResult</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ExceptionHandler(value = NullPointerException.class)</span><br>    <span class="hljs-keyword">public</span> ApiResult&lt;?&gt; nullPointerExceptionHandler(HttpServletRequest req, NullPointerException e) &#123;<br>        log.error(<span class="hljs-string">&quot;接口:&#123;&#125; 发生空指针异常:&#123;&#125;&quot;</span>, req.getRequestURI(), e.getStackTrace()[<span class="hljs-number">0</span>]);<br>        e.printStackTrace();<br>        <span class="hljs-keyword">return</span> ApiResult.exception(<span class="hljs-string">&quot;发生空指针异常:&quot;</span> + e.getStackTrace()[<span class="hljs-number">0</span>]);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 请求消息无法解析异常</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> req 请求参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> e   异常信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> ApiResult</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ExceptionHandler(value = HttpMessageNotReadableException.class)</span><br>    <span class="hljs-keyword">public</span> ApiResult&lt;?&gt; httpMessageNotReadableExceptionHandler(HttpServletRequest req, HttpMessageNotReadableException e) &#123;<br>        log.error(<span class="hljs-string">&quot;接口:&#123;&#125; 请求消息无法解析异常:&#123;&#125;&quot;</span>, req.getRequestURI(), e.getMessage());<br>        e.printStackTrace();<br>        <span class="hljs-keyword">return</span> ApiResult.fail(<span class="hljs-string">&quot;请检查请求体格式&quot;</span>);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以通过<code>@ExceptionHandler</code>指定各式各样的异常处理，包括自定义的异常、Java 内置的异常、校验参数异常<code>MethodArgumentNotValidException</code>。通过与<code>ApiResult</code>联动，达到即使程序异常，也会按照正常的数据格式进行响应。</p>
+<p>也可以实现在服务层需要返回一些业务性错误，但你的方法返回值却不是<code>ApiResult</code>，那么你可以抛出一些自定义异常，再在<code>ExceptionHandlerConfig</code>中进行处理。</p>
+
+      </section>
+      <section class="extra">
+        
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-%E5%9F%BA%E7%A1%80/" rel="tag">Spring 基础</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/2022/03/10/Spring/correlation/SolveYmalWarn/">解决 Spring 配置文件警告<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: 'a5bf4e51840a753f6321',
+      clientSecret: '5f6d66a8399eeca0ef8206239c40032e4e082ffa',
+      id: window.location.pathname,
+      repo: 'gitalk',
+      owner: 'zyan1226',
+      admin: 'zyan1226'
+    });
+    if ( false ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94"><span class="toc-text">请求与响应</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E7%9A%84-ApiResult"><span class="toc-text">通用的 ApiResult</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E7%A0%81%E6%9E%9A%E4%B8%BE"><span class="toc-text">状态码枚举</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AE%9E%E4%BD%93%E7%B1%BB%E5%A3%B0%E6%98%8E%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E5%8F%82%E6%95%B0"><span class="toc-text">使用实体类声明请求与响应参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E8%BF%99%E4%BA%9B%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">如何管理这些实体类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8-Swagger"><span class="toc-text">推荐使用 Swagger</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96%E5%B9%B6%E5%90%AF%E7%94%A8"><span class="toc-text">添加依赖并启用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-SwaggerProperties"><span class="toc-text">创建 SwaggerProperties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-SwaggerConfig"><span class="toc-text">创建 SwaggerConfig</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Api"><span class="toc-text">@Api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiOperation"><span class="toc-text">@ApiOperation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiModel"><span class="toc-text">@ApiModel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiModelProperty"><span class="toc-text">@ApiModelProperty</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A2%E7%84%B6%E7%94%A8%E4%BA%86%E5%B0%B1%E8%90%BD%E5%AE%9E%E4%B8%8B%E5%8E%BB"><span class="toc-text">既然用了就落实下去</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C"><span class="toc-text">请求参数校验</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">全局异常处理</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1113882975 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  iconQQ"></i>
+      </a><a 
+        href="https://github.com/zyan1226 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  icongithub-fill"></i>
+      </a><a 
+        href="mailto:zyan1226@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+    <div class="search">
+  <div class="search-container">
+    <div class="search-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <div class="search-input-wrapper">
+      <i class="search-input-icon iconfont iconsearch"></i>
+      <input class="search-input" type="search" id="search-input" placeholder="Search..." autofocus autocomplete="off"
+        autocorrect="off" autocapitalize="off">
+    </div>
+    <div class="search-output" id="search-output"></div>
+  </div>
+</div>
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script defer src='https://hm.baidu.com/hm.js?2bac3d80813084efd7f9788ca0682f2a'></script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

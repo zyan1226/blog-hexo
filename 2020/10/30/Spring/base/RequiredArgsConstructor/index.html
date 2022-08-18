@@ -213,14 +213,14 @@
         
         <p>在我看来，<code>Lombok</code>大大提高了开发效率。举个栗子，在我最近工作所开发的ERP系统中，由于行业的特殊性，一张表动辄七八十个字段，难道你会为<code>Entity</code>一个一个的去写<code>set</code>和<code>get</code>方法？或者说使用一些工具去生成？反正我打死都不会干的，毕竟人类只有越来越“懒”，才会想尽一切办法去提高生产力。</p>
 <p>这篇文章暂且不谈<code>Lombok</code>的优劣，最近我在爬帖子时发现了一个注解，可以优雅的在 <code>Spring</code> 项目中进行 <code>Bean</code> 注入：<code>@RequiredArgsConstructor</code>，这个注解则由<code>Lombok</code>提供。从这个单词来理解，大致就是，<code>必须的参数构造器</code>，那么这个注解又是怎么和<code>Bean</code>注入扯上关系的？向下看。</p>
-<h2 id="Bean注入乱象"><a href="#Bean注入乱象" class="headerlink" title="Bean注入乱象"></a>Bean注入乱象</h2><p><code>Spring</code>提供了三种注入模式，一种是<code>属性注入</code>(Filed injection)，一种是通过<code>setter</code>方法，一种是<code>构造器注入</code>。就目前情况来看，许多的项目看起来应该是这样的：</p>
+<h1 id="Bean注入乱象"><a href="#Bean注入乱象" class="headerlink" title="Bean注入乱象"></a>Bean注入乱象</h1><p><code>Spring</code>提供了三种注入模式，一种是<code>属性注入</code>(Filed injection)，一种是通过<code>setter</code>方法，一种是<code>构造器注入</code>。就目前情况来看，许多的项目看起来应该是这样的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ARepo aRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> BRepo bRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CRepo cRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DRepo dRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这样的使用方法本身没有什么问题，看起来还蛮整洁哈，可真实项目里却是这样的：</p>
 <p><img  src="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png"  ><span class="image-caption">真实项目截图</span></p>
 <p><code>Spring</code>从4.0开始，<strong>就 不 推 荐 使 用 属 性 注 入 模 式 了，</strong>原因是它可以让我们忽略掉一些代码可能变坏的隐患，同时这样的写法也使<code>IDEA</code>向你发出<code>黄色警告</code>!</p>
 <p>既然<code>Spring</code>推荐使用显式的<code>Setter</code>和<code>构造器方式</code>，那我们就切换一下实现方案。</p>
-<h2 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h2><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
+<h1 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h1><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>或者……像这样：</p>
@@ -284,7 +284,7 @@
           
   <aside class="toc-wrap">
     <h3 class="toc-title">文章目录：</h3>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bean%E6%B3%A8%E5%85%A5%E4%B9%B1%E8%B1%A1"><span class="toc-text">Bean注入乱象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E4%B8%AA%E6%A0%B7%E5%AD%90%E5%BE%88%E4%BC%98%E9%9B%85"><span class="toc-text">这个样子很优雅</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Bean%E6%B3%A8%E5%85%A5%E4%B9%B1%E8%B1%A1"><span class="toc-text">Bean注入乱象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%99%E4%B8%AA%E6%A0%B7%E5%AD%90%E5%BE%88%E4%BC%98%E9%9B%85"><span class="toc-text">这个样子很优雅</span></a></li></ol>
   </aside>
 
         

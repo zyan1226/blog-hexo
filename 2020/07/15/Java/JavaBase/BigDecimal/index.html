@@ -212,7 +212,7 @@
           <p><p><code>BigDecimal</code> 是 Java 提供的一个关于小数精确计算的类，其位于<code>java.math</code>包下。</p>
 <p>不同于基本数据类型，<code>BigDecimal</code>是调用相关方法来进行运算。因为其拥有非常精确的小数计算能力，所以比较适合用于财务相关的计算等等。但是，其运行效率是不及 <code>Float</code> 与 <code>Double</code> 的，要按照实际情况，运用在合理的地方。</p></p>
         
-        <h2 id="对象初始化"><a href="#对象初始化" class="headerlink" title="对象初始化"></a>对象初始化</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDec</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br></code></pre></td></tr></table></figure>
+        <h1 id="对象初始化"><a href="#对象初始化" class="headerlink" title="对象初始化"></a>对象初始化</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDec</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br></code></pre></td></tr></table></figure>
 
 <p>或</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//不建议使用</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDec</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-number">99.6</span>);<br></code></pre></td></tr></table></figure>
@@ -222,17 +222,17 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">BigDecimal bigDecimal=<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">99.6<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">99</span>.<span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
 
 <p>而执行下方代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">BigDecimal bigDecimal=<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-number">99.6</span>);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">99.599999999999994315658113919198513031005859375<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">99</span>.<span class="hljs-number">599999999999994315658113919198513031005859375</span><br></code></pre></td></tr></table></figure>
 
 <p>问题立刻显现出来，使用 Double 型数据初始化 Bigdecimal 是不精确的，会损失精度。这不是 BigDecimal 的问题，而属于 Double 本身。在 IDEA 中，使用 Double 初始化时，则会“报黄”警告。<mark style="background-color:pink;">所以请务必使用 String 初始化 BigDecimal !</mark></p>
 <p><img  src="https://i.loli.net/2020/07/15/iGtUM7VnseTyJSc.png"  ><span class="image-caption">IDEA 警告</span></p>
-<h2 id="建议的数据库解决方案"><a href="#建议的数据库解决方案" class="headerlink" title="建议的数据库解决方案"></a>建议的数据库解决方案</h2><p>基于上一部分得到的结论，建议在数据库中使用<code> VARCHAR</code> 类型或者 <code>DECIMAL</code>，这里以 MySQL + MyBatis 为例。</p>
+<h1 id="建议的数据库解决方案"><a href="#建议的数据库解决方案" class="headerlink" title="建议的数据库解决方案"></a>建议的数据库解决方案</h1><p>基于上一部分得到的结论，建议在数据库中使用<code> VARCHAR</code> 类型或者 <code>DECIMAL</code>，这里以 MySQL + MyBatis 为例。</p>
 <table>
 <thead>
 <tr>
@@ -249,42 +249,42 @@
 <td>BigDecimal</td>
 </tr>
 </tbody></table>
-<h2 id="加减运算"><a href="#加减运算" class="headerlink" title="加减运算"></a>加减运算</h2><blockquote>
+<h1 id="加减运算"><a href="#加减运算" class="headerlink" title="加减运算"></a>加减运算</h1><blockquote>
 <p>加减运算比较简单，使用 <code>add()</code> 与 <code>subtract()</code> 方法进行处理。</p>
 </blockquote>
-<h3 id="减法"><a href="#减法" class="headerlink" title="减法"></a>减法</h3><p>示例代码</p>
+<h2 id="减法"><a href="#减法" class="headerlink" title="减法"></a>减法</h2><p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">subtract</span> <span class="hljs-operator">=</span> bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(subtract.toString());<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">32.7<br>99.6<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">32</span>.<span class="hljs-number">7</span><br><span class="hljs-attribute">99</span>.<span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
 
 <p>此处需要注意的是，<mark style="background-color:pink;">所有的运算方法在执行后并不会影响参与计算的数，他只会将计算结果返回！</mark></p>
 <p>你可以使用新的对象来接受，或者覆盖旧的对象。</p>
 <p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
-<h3 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h3><p>示例代码</p>
+<h2 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h2><p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">166.5<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">166</span>.<span class="hljs-number">5</span><br></code></pre></td></tr></table></figure>
 
 
-<h2 id="乘除运算"><a href="#乘除运算" class="headerlink" title="乘除运算"></a>乘除运算</h2><h3 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h3><p>使用 <code>multiply()</code>方法进行处理。</p>
+<h1 id="乘除运算"><a href="#乘除运算" class="headerlink" title="乘除运算"></a>乘除运算</h1><h2 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h2><p>使用 <code>multiply()</code>方法进行处理。</p>
 <p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.multiply(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">6663.24<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">6663</span>.<span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h3><blockquote>
+<h2 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h2><blockquote>
 <p>除法是比较特殊的一个运算，因为除数与被除数的关系，可能会造成结果为<code>无限循环小数</code>或<code>无限不循环小数</code>，为了解决这一问题你需要指定<code>小数保留方案</code>。</p>
 </blockquote>
 <p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;3&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">33.2<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">33</span>.<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 
 <p>因为该运算结果不是<code>无限循环小数</code>，所以一切看起来都很 Nice ，但是当你稍稍改动一下，它就会“原形毕露”。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
@@ -301,7 +301,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.divide(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>),<span class="hljs-number">2</span>,BigDecimal.ROUND_DOWN);<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1.48<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.<span class="hljs-number">48</span><br></code></pre></td></tr></table></figure>
 
 <p>此时一切都已恢复往日的平静，那么到底是什么力量遏制住了可恶的 Exception 呢？细心的同学会发现在 <code>divide()</code>方法中多了两个参数，一个是<code>2</code>，一个是<code>BigDecimal.ROUND_DOWN</code>。其中，2是保留小数的位数，这个很容易理解。而<code>BigDecimal.ROUND_DOWN</code>又是什么东西呢？他是 BigDecimal 类中的小数保留方案常量，算上这一个，一共有八个方案常量，请看解析。</p>
 <table>
@@ -345,14 +345,14 @@
 </tr>
 </tbody></table>
 <p>这么多的小数保留方案，其实常用的也不多，感兴趣的话，可以自己写个测试类玩玩。</p>
-<h2 id="比较大小"><a href="#比较大小" class="headerlink" title="比较大小"></a>比较大小</h2><blockquote>
+<h1 id="比较大小"><a href="#比较大小" class="headerlink" title="比较大小"></a>比较大小</h1><blockquote>
 <p>比较大小也是需要调用方法的，使用<code>compareTo()</code>方法即可处理。</p>
 </blockquote>
 <p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>);<br><span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> a.compareTo(b);<br>System.out.println(i);<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1<br></code></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">1<br></code></pre></td></tr></table></figure>
 
 <p><code>compareTo()</code>方法的返回值是一个<code>int</code>型的数据，以上方示例为例，请看解析</p>
 <table>
@@ -378,11 +378,11 @@
 <p>当你要判断一个数的与0的关系（正负）时可以这样写</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;-99.6&quot;</span>);<br><span class="hljs-keyword">if</span> (a.compareTo(BigDecimal.ZERO) &gt; <span class="hljs-number">0</span>) &#123;<br>	<span class="hljs-comment">//a是正数</span><br>&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.compareTo(BigDecimal.ZERO) == <span class="hljs-number">0</span>)&#123;<br>	<span class="hljs-comment">//a==0</span><br>&#125;<span class="hljs-keyword">else</span> &#123;<br>	<span class="hljs-comment">//a是负数</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="去除无用的零"><a href="#去除无用的零" class="headerlink" title="去除无用的零"></a>去除无用的零</h3><p>示例代码</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="去除无用的零"><a href="#去除无用的零" class="headerlink" title="去除无用的零"></a>去除无用的零</h2><p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.12300000&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> a.stripTrailingZeros();<br>System.out.println(b.toString());<br></code></pre></td></tr></table></figure>
 
 <p>运行结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">99.123<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">99</span>.<span class="hljs-number">123</span><br></code></pre></td></tr></table></figure>
       </section>
       <section class="extra">
         
@@ -435,7 +435,7 @@
           
   <aside class="toc-wrap">
     <h3 class="toc-title">文章目录：</h3>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">对象初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E8%AE%AE%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">建议的数据库解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%87%8F%E8%BF%90%E7%AE%97"><span class="toc-text">加减运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%8F%E6%B3%95"><span class="toc-text">减法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E6%B3%95"><span class="toc-text">加法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%98%E9%99%A4%E8%BF%90%E7%AE%97"><span class="toc-text">乘除运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%98%E6%B3%95"><span class="toc-text">乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%A4%E6%B3%95"><span class="toc-text">除法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E5%A4%A7%E5%B0%8F"><span class="toc-text">比较大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E6%97%A0%E7%94%A8%E7%9A%84%E9%9B%B6"><span class="toc-text">去除无用的零</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">对象初始化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BB%BA%E8%AE%AE%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">建议的数据库解决方案</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A0%E5%87%8F%E8%BF%90%E7%AE%97"><span class="toc-text">加减运算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%8F%E6%B3%95"><span class="toc-text">减法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E6%B3%95"><span class="toc-text">加法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%98%E9%99%A4%E8%BF%90%E7%AE%97"><span class="toc-text">乘除运算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%98%E6%B3%95"><span class="toc-text">乘法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%A4%E6%B3%95"><span class="toc-text">除法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E5%A4%A7%E5%B0%8F"><span class="toc-text">比较大小</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E6%97%A0%E7%94%A8%E7%9A%84%E9%9B%B6"><span class="toc-text">去除无用的零</span></a></li></ol></li></ol>
   </aside>
 
         
