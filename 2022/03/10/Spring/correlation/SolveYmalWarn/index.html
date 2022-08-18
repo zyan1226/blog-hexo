@@ -256,8 +256,6 @@
       
         <section class="comments">
   
-    <div class="btn" id="comments-btn">查看评论</div>
-  
   
 <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 <div id="gitalk" class="gitalk"></div>
@@ -272,7 +270,7 @@
       owner: 'zyan1226',
       admin: 'zyan1226'
     });
-    if ( true ) {
+    if ( false ) {
       $("#comments-btn").on("click", function () {
         $(this).hide();
         gitalk.render('gitalk');

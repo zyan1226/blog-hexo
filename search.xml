@@ -1,6 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Java 函数式编程</title>
+    <url>/2022/03/04/Java/JavaBase/FunctionalProgramming/</url>
+    <content><![CDATA[<p>从 Java 8 开始，便拥有了函数式编程的能力。这个能力通俗来讲，就是可以把一个方法实现（也可简单的理解为代码片段）作为参数进行传递，并在适当的时候执行。</p>
+<p>Java 有内置的一些类或工具就使用到这个特性，例如整理集合时所使用的<code>stream()</code></p>
+<p>其实在真实的项目开发中，使用这个特性的人并不多。然而在一次偶然的开发过程中，让我深刻理解到这个特性的重要程度，以及它能为代码结构带来多大的优化空间。</p>
+<h2 id="为什么要使用它？"><a href="#为什么要使用它？" class="headerlink" title="为什么要使用它？"></a>为什么要使用它？</h2><h3 id="抛出问题"><a href="#抛出问题" class="headerlink" title="抛出问题"></a>抛出问题</h3><p>我们来看一个代码场景，现在有一个<code>Procedure</code>类，如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Procedure</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test1</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test2</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">2</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test3</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">3</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>还有一个<code>Share</code>类，如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Share</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">a</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test1(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">b</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test2(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">c</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test3(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>想想怎么优化<code>Share</code>类里的<code>a() b() c()</code>方法，提高代码的复用性，优化不允许变更<code>a() b() c()</code>方法的功能。</p>
+<h3 id="一般优化"><a href="#一般优化" class="headerlink" title="一般优化"></a>一般优化</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Share</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">a</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test1(i);<br>            println(i, value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">b</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test2(i);<br>            println(i, value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">c</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test3(i);<br>            println(i, value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">println</span><span class="hljs-params">(Integer index, Integer value)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + index + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>仿佛最大的优化，也只能把打印结果的那一行代码抽出，作为公共的方法使用。</p>
+<h3 id="函数式是最优解"><a href="#函数式是最优解" class="headerlink" title="函数式是最优解"></a>函数式是最优解</h3><p>通过分析可以看出，三个方法里的<code>for</code>循环是一模一样的，唯一的不同点就是这三个方法都有自己的调用逻辑：<code>a()</code>调用<code>Procedure.test1(Integer)</code>，<code>b()</code>调用<code>Procedure.test2(Integer)</code>，<code>c()</code>调用<code>Procedure.test3(Integer)</code>。</p>
+<p>那么我们就可以把这个调用逻辑作为一个方法的实现内容进行传递，交给<code>println()</code>方法，让其在适当的地方调用。</p>
+<p>这个时候，函数式编程就像魔法一样，把这个类的代码结构优化到淋漓尽致。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Share</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">a</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//简写</span><br>        println(Procedure::test1);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">b</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//简写</span><br>        println(Procedure::test2);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">c</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//为了讲解，此处使用完整写法</span><br>        println((t)-&gt;&#123;<br>            <span class="hljs-keyword">return</span> Procedure.test3(t);<br>        &#125;);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">println</span><span class="hljs-params">(Function&lt;Integer, Integer&gt; func)</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> func.apply(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        a();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Java-内置的函数式接口"><a href="#Java-内置的函数式接口" class="headerlink" title="Java 内置的函数式接口"></a>Java 内置的函数式接口</h2><p>Java 是一种强类型语言，所以在函数式编程这一特性也不例外，它不能像 JS 那样可以将任何形式（这里指参数、返回值）的函数进行传递，而是必须在函数接受方显式的规定该函数的数据类型等细节。</p>
+<p>Java 利用泛型内置了一些可以灵活使用的函数式接口，你可以通过指定这些接口的泛型达到定制化的目的，来满足一般的开发需求。</p>
+<h3 id="接口名称关键字整理"><a href="#接口名称关键字整理" class="headerlink" title="接口名称关键字整理"></a>接口名称关键字整理</h3><p>由于内置的函数式接口较多，这里就不再一一列举，可以<a href="https://www.runoob.com/java/java8-functional-interfaces.html">点击访问菜鸟教程网站</a>进行查阅</p>
+<p>不过我发现这些接口的名称和他们的场景用途存在一定的规律，特地整理一份关键字的对照表。</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>返回值</th>
+<th>参数</th>
+<th>执行</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Consumer</td>
+<td>无返回结果</td>
+<td>有参数</td>
+<td>accept方法</td>
+</tr>
+<tr>
+<td>Supplier</td>
+<td>有返回结果</td>
+<td>无参数</td>
+<td>get方法</td>
+</tr>
+<tr>
+<td>Function</td>
+<td>有返回结果</td>
+<td>有参数</td>
+<td>apply方法</td>
+</tr>
+<tr>
+<td>Predicate</td>
+<td>有返回结果，且结果为布尔值</td>
+<td>有参数</td>
+<td>test方法</td>
+</tr>
+<tr>
+<td>Operator</td>
+<td>有返回结果，且参数和返回结果数据类型相同</td>
+<td>有参数，且参数和返回结果数据类型相同</td>
+<td>apply方法</td>
+</tr>
+</tbody></table>
+<h2 id="如何自定义函数式接口"><a href="#如何自定义函数式接口" class="headerlink" title="如何自定义函数式接口"></a>如何自定义函数式接口</h2><p>当 Java 内置的函数式接口不能满足开发需求时（例如接口的参数数量很多），你可以自己定义一个函数式接口来使用。</p>
+<p>当然，出于个人喜好、项目管理等原因，你也可以在项目中完全使用自定义的函数式接口，放弃所有的内置函数式接口。</p>
+<p>下面就是一个标准的函数式接口，看起来与普通的接口定义没有什么不同。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test;<br><br><span class="hljs-meta">@FunctionalInterface</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">TestInterFace</span> &#123;<br><br>    Integer <span class="hljs-title function_">test</span><span class="hljs-params">(String a, String b, String c, String d)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此处需要注意的是，经过实践，<code>@FunctionalInterface</code>注解并不是必须的，出于习惯的原因，我都会加上该注解。</p>
+<p><strong>自定义函数式接口需要满足：有且只有一个未实现的方法。</strong></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java 基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决 Spring 配置文件警告</title>
+    <url>/2022/03/10/Spring/correlation/SolveYmalWarn/</url>
+    <content><![CDATA[<p>Spring 项目默认是使用<code>.properties</code>文件作为配置文件的，但是我们习惯上会更多的使用<code>.yml</code>文件，因为其可以体现出配置项的树形结构，可读性较强。</p>
+<h2 id="配置文件乱象"><a href="#配置文件乱象" class="headerlink" title="配置文件乱象"></a>配置文件乱象</h2><p>一般在配置数据源、端口号、服务名称这些配置时并不会出现黄色警告，但是一些自定义的配置项则会出现<code>一片黄色的骇人景象</code>。</p>
+<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/HF7eK4CEIAsTL5y.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">正常的项目配置</span></p>
+<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/5Mxg2oscKYwlab8.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">自定义的配置项</span></p>
+<p>虽然有警告，但是这并不是致命错误，因为你仍然可以正常的使用 <code>@Value(&quot;$&#123;test.a&#125;&quot;)</code> 来取值，但是作为有代码洁癖的人，这不能忍！而且 <code>@Value</code> 这种方式很容易因大意导致名称不一致，进而引起无法取值。</p>
+<h2 id="主角登场"><a href="#主角登场" class="headerlink" title="主角登场"></a>主角登场</h2><p>我们先去没有警告的配置项 <code>spring.datasource.url</code> 代码内部，看看是怎么写的，能不能找点蛛丝马迹。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ConfigurationProperties(</span><br><span class="hljs-meta">    prefix = &quot;spring.datasource&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceProperties</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanClassLoaderAware</span>, InitializingBean &#123;<br>    <span class="hljs-keyword">private</span> ClassLoader classLoader;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">generateUniqueName</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">DataSource</span>&gt; type;<br>    <span class="hljs-keyword">private</span> String driverClassName;<br>    <span class="hljs-keyword">private</span> String url;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String password;<br>    <span class="hljs-keyword">private</span> String jndiName;<br>    <span class="hljs-comment">//省略后部代码........</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>英语稍懂一些就会立刻注意到 <code>@ConfigurationProperties</code> 这个注解，因为它与我们此次要解决的问题非常相近，翻译过来就是 <code>配置属性</code>。</p>
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>没错，<code>@ConfigurationProperties</code> 注解就是解决配置文件警告的关键，那么他是如何使用的？</p>
+<h3 id="关系映射实体类"><a href="#关系映射实体类" class="headerlink" title="关系映射实体类"></a>关系映射实体类</h3><p>像使用 <code>MyBatisPlus</code> 那样，我们需要先创建一个 <code>关系映射实体类</code>，目的是告诉 Spring，服务启动时你把哪些配置项的值给我塞到这个实体类中。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test.pojo.properties;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.NestedConfigurationProperty;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String aProperty;<br><br>    <span class="hljs-keyword">private</span> String b;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Boolean</span> <span class="hljs-variable">enable</span> <span class="hljs-operator">=</span> Boolean.FALSE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>需要注意这个实体类必须包含 <code>Setter</code> 和 <code>Getter</code> 方法，否则你将取不到值和无法取值。并且这个类必须使用 <code>@Component</code> 注解交由 Spring 管理，或者在服务启动类上使用 <code>@ConfigurationPropertiesScan</code> 注解进行扫描。</p>
+<p><code>@ConfigurationProperties</code> 注解的 <code>prefix</code> 用于指定配置项前缀，可以使用 <code>.</code> 进行多级指定。不能使用驼峰命名，只能使用 <code>-</code> 进行分词。</p>
+<p>可以直接在此类中为属性赋上默认值。</p>
+<h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TestProperties testProperties;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test</span><span class="hljs-params">()</span> &#123;<br>         System.out.println(<span class="hljs-string">&quot;配置项 test.enable 取值:&quot;</span> + testProperties.getEnable());<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>将 <code>TestProperties</code> 注入到适当的位置，通过 <code>Getter</code> 方法进行取值。此处使用 <code>@RequiredArgsConstructor</code> 进行构造器注入，想要详细了解使用方法，可阅读 <a href="/2020/10/30/Spring/base/RequiredArgsConstructor/">如何优雅的进行 Bean 注入</a>。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight yml"><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">a-property:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<p>按照习惯，建议在 <code>.yml</code> 文件中使用 <code>-</code> 进行分词，在实体类中使用驼峰命名，不要担心这样无法取值，<code>Spring</code> 会帮你进行转化，当然，你也可以选择不这么做。</p>
+<h2 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h2><h3 id="多级配置"><a href="#多级配置" class="headerlink" title="多级配置"></a>多级配置</h3><p>多级配置只需要引入静态内部类即可</p>
+<h4 id="映射类写法"><a href="#映射类写法" class="headerlink" title="映射类写法"></a>映射类写法</h4><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Other other;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="yml-文件写法"><a href="#yml-文件写法" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other:</span><br>    <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="列表配置"><a href="#列表配置" class="headerlink" title="列表配置"></a>列表配置</h3><h4 id="映射类写法-1"><a href="#映射类写法-1" class="headerlink" title="映射类写法"></a>映射类写法</h4><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> List&lt;Other&gt; otherList;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="yml-文件写法-1"><a href="#yml-文件写法-1" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other-list:</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 相关</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何优雅的进行 Bean 注入</title>
+    <url>/2020/10/30/Spring/base/RequiredArgsConstructor/</url>
+    <content><![CDATA[<p>不知道为什么，最近听到许多反对使用<code>Lombok</code>的声音，说什么影响代码可读性，具有侵入性。（弱弱的问一句，<code>Entity</code>要什么可读性？）这是我从上学的时候认识<code>Lombok</code>以来，第一次听到这样的声音。</p>
+<span id="more"></span>
+
+<p>在我看来，<code>Lombok</code>大大提高了开发效率。举个栗子，在我最近工作所开发的ERP系统中，由于行业的特殊性，一张表动辄七八十个字段，难道你会为<code>Entity</code>一个一个的去写<code>set</code>和<code>get</code>方法？或者说使用一些工具去生成？反正我打死都不会干的，毕竟人类只有越来越“懒”，才会想尽一切办法去提高生产力。</p>
+<p>这篇文章暂且不谈<code>Lombok</code>的优劣，最近我在爬帖子时发现了一个注解，可以优雅的在 <code>Spring</code> 项目中进行 <code>Bean</code> 注入：<code>@RequiredArgsConstructor</code>，这个注解则由<code>Lombok</code>提供。从这个单词来理解，大致就是，<code>必须的参数构造器</code>，那么这个注解又是怎么和<code>Bean</code>注入扯上关系的？向下看。</p>
+<h2 id="Bean注入乱象"><a href="#Bean注入乱象" class="headerlink" title="Bean注入乱象"></a>Bean注入乱象</h2><p><code>Spring</code>提供了三种注入模式，一种是<code>属性注入</code>(Filed injection)，一种是通过<code>setter</code>方法，一种是<code>构造器注入</code>。就目前情况来看，许多的项目看起来应该是这样的：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ARepo aRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> BRepo bRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CRepo cRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DRepo dRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样的使用方法本身没有什么问题，看起来还蛮整洁哈，可真实项目里却是这样的：</p>
+<p><img    class="lazyload" data-original="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">真实项目截图</span></p>
+<p><code>Spring</code>从4.0开始，<strong>就 不 推 荐 使 用 属 性 注 入 模 式 了，</strong>原因是它可以让我们忽略掉一些代码可能变坏的隐患，同时这样的写法也使<code>IDEA</code>向你发出<code>黄色警告</code>!</p>
+<p>既然<code>Spring</code>推荐使用显式的<code>Setter</code>和<code>构造器方式</code>，那我们就切换一下实现方案。</p>
+<h2 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h2><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>或者……像这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ERepo eRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo,BRepo bRepo,CRepo cRepo</span><br><span class="hljs-params">                            ,DRepo dRepo,ERepo eRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>        <span class="hljs-built_in">this</span>.bRepo = bRepo;<br>        <span class="hljs-built_in">this</span>.cRepo = cRepo;<br>        <span class="hljs-built_in">this</span>.dRepo = dRepo;<br>        <span class="hljs-built_in">this</span>.eRepo = eRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>emmm，要是这样的话，我宁愿用<code>@Autowired</code>。</p>
+<p>当注入的<code>Bean</code>变多之后，构造器便显得超级臃肿，这个时候<code>@RequiredArgsConstructor</code>就派上了大用场，来看：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">final</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>嗯，这才是我们想要的样子，相信聪明的你已经明白了<code>@RequiredArgsConstructor</code>会在编译时帮你生成那个又臭又长的构造器，达到了<code>Bean</code>注入的目的。</p>
+<p>好了，如此优雅的注入，还不快拿去享用。</p>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>学会使用 BigDecimal</title>
     <url>/2020/07/15/Java/JavaBase/BigDecimal/</url>
     <content><![CDATA[<p><code>BigDecimal</code> 是 Java 提供的一个关于小数精确计算的类，其位于<code>java.math</code>包下。</p>
@@ -183,161 +338,6 @@
       </categories>
       <tags>
         <tag>Java 基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java 函数式编程</title>
-    <url>/2022/03/04/Java/JavaBase/FunctionalProgramming/</url>
-    <content><![CDATA[<p>从 Java 8 开始，便拥有了函数式编程的能力。这个能力通俗来讲，就是可以把一个方法实现（也可简单的理解为代码片段）作为参数进行传递，并在适当的时候执行。</p>
-<p>Java 有内置的一些类或工具就使用到这个特性，例如整理集合时所使用的<code>stream()</code></p>
-<p>其实在真实的项目开发中，使用这个特性的人并不多。然而在一次偶然的开发过程中，让我深刻理解到这个特性的重要程度，以及它能为代码结构带来多大的优化空间。</p>
-<h2 id="为什么要使用它？"><a href="#为什么要使用它？" class="headerlink" title="为什么要使用它？"></a>为什么要使用它？</h2><h3 id="抛出问题"><a href="#抛出问题" class="headerlink" title="抛出问题"></a>抛出问题</h3><p>我们来看一个代码场景，现在有一个<code>Procedure</code>类，如下</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Procedure</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test1</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test2</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">2</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Integer <span class="hljs-title function_">test3</span><span class="hljs-params">(Integer t)</span> &#123;<br>        <span class="hljs-keyword">return</span> t + <span class="hljs-number">3</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>还有一个<code>Share</code>类，如下</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Share</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">a</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test1(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">b</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test2(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">c</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test3(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>想想怎么优化<code>Share</code>类里的<code>a() b() c()</code>方法，提高代码的复用性，优化不允许变更<code>a() b() c()</code>方法的功能。</p>
-<h3 id="一般优化"><a href="#一般优化" class="headerlink" title="一般优化"></a>一般优化</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Share</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">a</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test1(i);<br>            println(i, value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">b</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test2(i);<br>            println(i, value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">c</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> Procedure.test3(i);<br>            println(i, value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">println</span><span class="hljs-params">(Integer index, Integer value)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + index + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>仿佛最大的优化，也只能把打印结果的那一行代码抽出，作为公共的方法使用。</p>
-<h3 id="函数式是最优解"><a href="#函数式是最优解" class="headerlink" title="函数式是最优解"></a>函数式是最优解</h3><p>通过分析可以看出，三个方法里的<code>for</code>循环是一模一样的，唯一的不同点就是这三个方法都有自己的调用逻辑：<code>a()</code>调用<code>Procedure.test1(Integer)</code>，<code>b()</code>调用<code>Procedure.test2(Integer)</code>，<code>c()</code>调用<code>Procedure.test3(Integer)</code>。</p>
-<p>那么我们就可以把这个调用逻辑作为一个方法的实现内容进行传递，交给<code>println()</code>方法，让其在适当的地方调用。</p>
-<p>这个时候，函数式编程就像魔法一样，把这个类的代码结构优化到淋漓尽致。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Share</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">a</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//简写</span><br>        println(Procedure::test1);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">b</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//简写</span><br>        println(Procedure::test2);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">c</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//为了讲解，此处使用完整写法</span><br>        println((t)-&gt;&#123;<br>            <span class="hljs-keyword">return</span> Procedure.test3(t);<br>        &#125;);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">println</span><span class="hljs-params">(Function&lt;Integer, Integer&gt; func)</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">3</span>; i++) &#123;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> func.apply(i);<br>            System.out.println(<span class="hljs-string">&quot;代码第&quot;</span> + i + <span class="hljs-string">&quot;次执行结果:&quot;</span> + value);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        a();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h2 id="Java-内置的函数式接口"><a href="#Java-内置的函数式接口" class="headerlink" title="Java 内置的函数式接口"></a>Java 内置的函数式接口</h2><p>Java 是一种强类型语言，所以在函数式编程这一特性也不例外，它不能像 JS 那样可以将任何形式（这里指参数、返回值）的函数进行传递，而是必须在函数接受方显式的规定该函数的数据类型等细节。</p>
-<p>Java 利用泛型内置了一些可以灵活使用的函数式接口，你可以通过指定这些接口的泛型达到定制化的目的，来满足一般的开发需求。</p>
-<h3 id="接口名称关键字整理"><a href="#接口名称关键字整理" class="headerlink" title="接口名称关键字整理"></a>接口名称关键字整理</h3><p>由于内置的函数式接口较多，这里就不再一一列举，可以<a href="https://www.runoob.com/java/java8-functional-interfaces.html">点击访问菜鸟教程网站</a>进行查阅</p>
-<p>不过我发现这些接口的名称和他们的场景用途存在一定的规律，特地整理一份关键字的对照表。</p>
-<table>
-<thead>
-<tr>
-<th>关键字</th>
-<th>返回值</th>
-<th>参数</th>
-<th>执行</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Consumer</td>
-<td>无返回结果</td>
-<td>有参数</td>
-<td>accept方法</td>
-</tr>
-<tr>
-<td>Supplier</td>
-<td>有返回结果</td>
-<td>无参数</td>
-<td>get方法</td>
-</tr>
-<tr>
-<td>Function</td>
-<td>有返回结果</td>
-<td>有参数</td>
-<td>apply方法</td>
-</tr>
-<tr>
-<td>Predicate</td>
-<td>有返回结果，且结果为布尔值</td>
-<td>有参数</td>
-<td>test方法</td>
-</tr>
-<tr>
-<td>Operator</td>
-<td>有返回结果，且参数和返回结果数据类型相同</td>
-<td>有参数，且参数和返回结果数据类型相同</td>
-<td>apply方法</td>
-</tr>
-</tbody></table>
-<h2 id="如何自定义函数式接口"><a href="#如何自定义函数式接口" class="headerlink" title="如何自定义函数式接口"></a>如何自定义函数式接口</h2><p>当 Java 内置的函数式接口不能满足开发需求时（例如接口的参数数量很多），你可以自己定义一个函数式接口来使用。</p>
-<p>当然，出于个人喜好、项目管理等原因，你也可以在项目中完全使用自定义的函数式接口，放弃所有的内置函数式接口。</p>
-<p>下面就是一个标准的函数式接口，看起来与普通的接口定义没有什么不同。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test;<br><br><span class="hljs-meta">@FunctionalInterface</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">TestInterFace</span> &#123;<br><br>    Integer <span class="hljs-title function_">test</span><span class="hljs-params">(String a, String b, String c, String d)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>此处需要注意的是，经过实践，<code>@FunctionalInterface</code>注解并不是必须的，出于习惯的原因，我都会加上该注解。</p>
-<p><strong>自定义函数式接口需要满足：有且只有一个未实现的方法。</strong></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java 基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何优雅的进行 Bean 注入</title>
-    <url>/2020/10/30/Spring/base/RequiredArgsConstructor/</url>
-    <content><![CDATA[<p>不知道为什么，最近听到许多反对使用<code>Lombok</code>的声音，说什么影响代码可读性，具有侵入性。（弱弱的问一句，<code>Entity</code>要什么可读性？）这是我从上学的时候认识<code>Lombok</code>以来，第一次听到这样的声音。</p>
-<span id="more"></span>
-
-<p>在我看来，<code>Lombok</code>大大提高了开发效率。举个栗子，在我最近工作所开发的ERP系统中，由于行业的特殊性，一张表动辄七八十个字段，难道你会为<code>Entity</code>一个一个的去写<code>set</code>和<code>get</code>方法？或者说使用一些工具去生成？反正我打死都不会干的，毕竟人类只有越来越“懒”，才会想尽一切办法去提高生产力。</p>
-<p>这篇文章暂且不谈<code>Lombok</code>的优劣，最近我在爬帖子时发现了一个注解，可以优雅的在 <code>Spring</code> 项目中进行 <code>Bean</code> 注入：<code>@RequiredArgsConstructor</code>，这个注解则由<code>Lombok</code>提供。从这个单词来理解，大致就是，<code>必须的参数构造器</code>，那么这个注解又是怎么和<code>Bean</code>注入扯上关系的？向下看。</p>
-<h2 id="Bean注入乱象"><a href="#Bean注入乱象" class="headerlink" title="Bean注入乱象"></a>Bean注入乱象</h2><p><code>Spring</code>提供了三种注入模式，一种是<code>属性注入</code>(Filed injection)，一种是通过<code>setter</code>方法，一种是<code>构造器注入</code>。就目前情况来看，许多的项目看起来应该是这样的：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ARepo aRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> BRepo bRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CRepo cRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DRepo dRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>这样的使用方法本身没有什么问题，看起来还蛮整洁哈，可真实项目里却是这样的：</p>
-<p><img    class="lazyload" data-original="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">真实项目截图</span></p>
-<p><code>Spring</code>从4.0开始，<strong>就 不 推 荐 使 用 属 性 注 入 模 式 了，</strong>原因是它可以让我们忽略掉一些代码可能变坏的隐患，同时这样的写法也使<code>IDEA</code>向你发出<code>黄色警告</code>!</p>
-<p>既然<code>Spring</code>推荐使用显式的<code>Setter</code>和<code>构造器方式</code>，那我们就切换一下实现方案。</p>
-<h2 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h2><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>或者……像这样：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ERepo eRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo,BRepo bRepo,CRepo cRepo</span><br><span class="hljs-params">                            ,DRepo dRepo,ERepo eRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>        <span class="hljs-built_in">this</span>.bRepo = bRepo;<br>        <span class="hljs-built_in">this</span>.cRepo = cRepo;<br>        <span class="hljs-built_in">this</span>.dRepo = dRepo;<br>        <span class="hljs-built_in">this</span>.eRepo = eRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>emmm，要是这样的话，我宁愿用<code>@Autowired</code>。</p>
-<p>当注入的<code>Bean</code>变多之后，构造器便显得超级臃肿，这个时候<code>@RequiredArgsConstructor</code>就派上了大用场，来看：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">final</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>嗯，这才是我们想要的样子，相信聪明的你已经明白了<code>@RequiredArgsConstructor</code>会在编译时帮你生成那个又臭又长的构造器，达到了<code>Bean</code>注入的目的。</p>
-<p>好了，如此优雅的注入，还不快拿去享用。</p>
-]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>Spring 基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决 Spring 配置文件警告</title>
-    <url>/2022/03/10/Spring/correlation/SolveYmalWarn/</url>
-    <content><![CDATA[<p>Spring 项目默认是使用<code>.properties</code>文件作为配置文件的，但是我们习惯上会更多的使用<code>.yml</code>文件，因为其可以体现出配置项的树形结构，可读性较强。</p>
-<h2 id="配置文件乱象"><a href="#配置文件乱象" class="headerlink" title="配置文件乱象"></a>配置文件乱象</h2><p>一般在配置数据源、端口号、服务名称这些配置时并不会出现黄色警告，但是一些自定义的配置项则会出现<code>一片黄色的骇人景象</code>。</p>
-<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/HF7eK4CEIAsTL5y.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">正常的项目配置</span></p>
-<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/5Mxg2oscKYwlab8.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">自定义的配置项</span></p>
-<p>虽然有警告，但是这并不是致命错误，因为你仍然可以正常的使用 <code>@Value(&quot;$&#123;test.a&#125;&quot;)</code> 来取值，但是作为有代码洁癖的人，这不能忍！而且 <code>@Value</code> 这种方式很容易因大意导致名称不一致，进而引起无法取值。</p>
-<h2 id="主角登场"><a href="#主角登场" class="headerlink" title="主角登场"></a>主角登场</h2><p>我们先去没有警告的配置项 <code>spring.datasource.url</code> 代码内部，看看是怎么写的，能不能找点蛛丝马迹。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ConfigurationProperties(</span><br><span class="hljs-meta">    prefix = &quot;spring.datasource&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceProperties</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanClassLoaderAware</span>, InitializingBean &#123;<br>    <span class="hljs-keyword">private</span> ClassLoader classLoader;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">generateUniqueName</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">DataSource</span>&gt; type;<br>    <span class="hljs-keyword">private</span> String driverClassName;<br>    <span class="hljs-keyword">private</span> String url;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String password;<br>    <span class="hljs-keyword">private</span> String jndiName;<br>    <span class="hljs-comment">//省略后部代码........</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>英语稍懂一些就会立刻注意到 <code>@ConfigurationProperties</code> 这个注解，因为它与我们此次要解决的问题非常相近，翻译过来就是 <code>配置属性</code>。</p>
-<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>没错，<code>@ConfigurationProperties</code> 注解就是解决配置文件警告的关键，那么他是如何使用的？</p>
-<h3 id="关系映射实体类"><a href="#关系映射实体类" class="headerlink" title="关系映射实体类"></a>关系映射实体类</h3><p>像使用 <code>MyBatisPlus</code> 那样，我们需要先创建一个 <code>关系映射实体类</code>，目的是告诉 Spring，服务启动时你把哪些配置项的值给我塞到这个实体类中。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test.pojo.properties;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.NestedConfigurationProperty;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String aProperty;<br><br>    <span class="hljs-keyword">private</span> String b;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Boolean</span> <span class="hljs-variable">enable</span> <span class="hljs-operator">=</span> Boolean.FALSE;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>需要注意这个实体类必须包含 <code>Setter</code> 和 <code>Getter</code> 方法，否则你将取不到值和无法取值。并且这个类必须使用 <code>@Component</code> 注解交由 Spring 管理，或者在服务启动类上使用 <code>@ConfigurationPropertiesScan</code> 注解进行扫描。</p>
-<p><code>@ConfigurationProperties</code> 注解的 <code>prefix</code> 用于指定配置项前缀，可以使用 <code>.</code> 进行多级指定。不能使用驼峰命名，只能使用 <code>-</code> 进行分词。</p>
-<p>可以直接在此类中为属性赋上默认值。</p>
-<h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TestProperties testProperties;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test</span><span class="hljs-params">()</span> &#123;<br>         System.out.println(<span class="hljs-string">&quot;配置项 test.enable 取值:&quot;</span> + testProperties.getEnable());<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>将 <code>TestProperties</code> 注入到适当的位置，通过 <code>Getter</code> 方法进行取值。此处使用 <code>@RequiredArgsConstructor</code> 进行构造器注入，想要详细了解使用方法，可阅读 <a href="/2020/10/30/Spring/base/RequiredArgsConstructor/">如何优雅的进行 Bean 注入</a>。</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight yml"><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">a-property:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
-
-<p>按照习惯，建议在 <code>.yml</code> 文件中使用 <code>-</code> 进行分词，在实体类中使用驼峰命名，不要担心这样无法取值，<code>Spring</code> 会帮你进行转化，当然，你也可以选择不这么做。</p>
-<h2 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h2><h3 id="多级配置"><a href="#多级配置" class="headerlink" title="多级配置"></a>多级配置</h3><p>多级配置只需要引入静态内部类即可</p>
-<h4 id="映射类写法"><a href="#映射类写法" class="headerlink" title="映射类写法"></a>映射类写法</h4><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Other other;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="yml-文件写法"><a href="#yml-文件写法" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other:</span><br>    <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="列表配置"><a href="#列表配置" class="headerlink" title="列表配置"></a>列表配置</h3><h4 id="映射类写法-1"><a href="#映射类写法-1" class="headerlink" title="映射类写法"></a>映射类写法</h4><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> List&lt;Other&gt; otherList;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="yml-文件写法-1"><a href="#yml-文件写法-1" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other-list:</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>Spring 相关</tag>
       </tags>
   </entry>
 </search>
