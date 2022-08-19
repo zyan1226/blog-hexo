@@ -266,41 +266,6 @@
       </tags>
   </entry>
   <entry>
-    <title>如何优雅的进行 Bean 注入</title>
-    <url>/2020/10/30/Spring/base/RequiredArgsConstructor/</url>
-    <content><![CDATA[<p>不知道为什么，最近听到许多反对使用<code>Lombok</code>的声音，说什么影响代码可读性，具有侵入性。（弱弱的问一句，<code>Entity</code>要什么可读性？）这是我从上学的时候认识<code>Lombok</code>以来，第一次听到这样的声音。</p>
-<span id="more"></span>
-
-<p>在我看来，<code>Lombok</code>大大提高了开发效率。举个栗子，在我最近工作所开发的ERP系统中，由于行业的特殊性，一张表动辄七八十个字段，难道你会为<code>Entity</code>一个一个的去写<code>set</code>和<code>get</code>方法？或者说使用一些工具去生成？反正我打死都不会干的，毕竟人类只有越来越“懒”，才会想尽一切办法去提高生产力。</p>
-<p>这篇文章暂且不谈<code>Lombok</code>的优劣，最近我在爬帖子时发现了一个注解，可以优雅的在 <code>Spring</code> 项目中进行 <code>Bean</code> 注入：<code>@RequiredArgsConstructor</code>，这个注解则由<code>Lombok</code>提供。从这个单词来理解，大致就是，<code>必须的参数构造器</code>，那么这个注解又是怎么和<code>Bean</code>注入扯上关系的？向下看。</p>
-<h1 id="Bean注入乱象"><a href="#Bean注入乱象" class="headerlink" title="Bean注入乱象"></a>Bean注入乱象</h1><p><code>Spring</code>提供了三种注入模式，一种是<code>属性注入</code>(Filed injection)，一种是通过<code>setter</code>方法，一种是<code>构造器注入</code>。就目前情况来看，许多的项目看起来应该是这样的：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ARepo aRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> BRepo bRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CRepo cRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DRepo dRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>这样的使用方法本身没有什么问题，看起来还蛮整洁哈，可真实项目里却是这样的：</p>
-<p><img    class="lazyload" data-original="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">真实项目截图</span></p>
-<p><code>Spring</code>从4.0开始，<strong>就 不 推 荐 使 用 属 性 注 入 模 式 了，</strong>原因是它可以让我们忽略掉一些代码可能变坏的隐患，同时这样的写法也使<code>IDEA</code>向你发出<code>黄色警告</code>!</p>
-<p>既然<code>Spring</code>推荐使用显式的<code>Setter</code>和<code>构造器方式</code>，那我们就切换一下实现方案。</p>
-<h1 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h1><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>或者……像这样：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ERepo eRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo,BRepo bRepo,CRepo cRepo</span><br><span class="hljs-params">                            ,DRepo dRepo,ERepo eRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>        <span class="hljs-built_in">this</span>.bRepo = bRepo;<br>        <span class="hljs-built_in">this</span>.cRepo = cRepo;<br>        <span class="hljs-built_in">this</span>.dRepo = dRepo;<br>        <span class="hljs-built_in">this</span>.eRepo = eRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>emmm，要是这样的话，我宁愿用<code>@Autowired</code>。</p>
-<p>当注入的<code>Bean</code>变多之后，构造器便显得超级臃肿，这个时候<code>@RequiredArgsConstructor</code>就派上了大用场，来看：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">final</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>嗯，这才是我们想要的样子，相信聪明的你已经明白了<code>@RequiredArgsConstructor</code>会在编译时帮你生成那个又臭又长的构造器，达到了<code>Bean</code>注入的目的。</p>
-<p>好了，如此优雅的注入，还不快拿去享用。</p>
-]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>Spring 基础</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>相对规范的服务API应如何实现</title>
     <url>/2022/08/18/Spring/base/StandardApi/</url>
     <content><![CDATA[<blockquote>
@@ -316,7 +281,7 @@
 <li>payload <strong>响应数据</strong>，这个参数可以是任何数据类型，它是接口响应的具体业务数据。</li>
 <li>exception <strong>程序异常信息</strong>，结合自己的开发经验，觉得需要这样一个参数来帮助开发者更快的定位问题。例如发生某个异常，这个参数可以是该异常的具体信息<code>e.getMessage()</code>，所以开发人员只需通过浏览器开发者工具就能找到发生异常的原因。注意这个信息是不能传达给用户的！</li>
 </ul>
-<p>可以根据自己的习惯与命名这些参数，也可以为<code>ApiResult</code>扩展一些常用的方法，使得接口在构建响应参数时更加方便。</p>
+<p>可以根据自己的习惯去命名这些参数，也可以为<code>ApiResult</code>扩展一些常用的方法，使得接口在构建响应参数时更加方便。</p>
 <h2 id="状态码枚举"><a href="#状态码枚举" class="headerlink" title="状态码枚举"></a>状态码枚举</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ApiStatusEnum</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 成功</span><br><span class="hljs-comment">     */</span><br>    SUCCESS(<span class="hljs-number">200</span>, <span class="hljs-string">&quot;处理成功&quot;</span>),<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 未授权（登录信息有误，需要重新登录）</span><br><span class="hljs-comment">     */</span><br>    UNAUTHORIZED(<span class="hljs-number">401</span>, <span class="hljs-string">&quot;未授权（登录信息有误 需要重新登录）&quot;</span>),<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 无操作权限</span><br><span class="hljs-comment">     */</span><br>    NO_PERMISSIONS(<span class="hljs-number">403</span>, <span class="hljs-string">&quot;无操作权限&quot;</span>),<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 失败</span><br><span class="hljs-comment">     */</span><br>    FAIL(<span class="hljs-number">500</span>, <span class="hljs-string">&quot;处理失败&quot;</span>);<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 状态码</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Integer status;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 提示消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String msg;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这是一个状态码枚举示例，它的<code>status</code>最终会体现在<code>ApiResult</code>的<code>status</code>中，前端得以根据不同的状态码进行逻辑处理，可以根据业务需要进行添加。可以参考 http 标准的状态码列举，但是一般与业务相近的 http 状态码少之又少，所以<strong>按照数字顺序不断自增列举</strong>的方式也是可取的。</p>
@@ -443,6 +408,41 @@
       </categories>
       <tags>
         <tag>Spring 相关</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何优雅的进行 Bean 注入</title>
+    <url>/2020/10/30/Spring/base/RequiredArgsConstructor/</url>
+    <content><![CDATA[<p>不知道为什么，最近听到许多反对使用<code>Lombok</code>的声音，说什么影响代码可读性，具有侵入性。（弱弱的问一句，<code>Entity</code>要什么可读性？）这是我从上学的时候认识<code>Lombok</code>以来，第一次听到这样的声音。</p>
+<span id="more"></span>
+
+<p>在我看来，<code>Lombok</code>大大提高了开发效率。举个栗子，在我最近工作所开发的ERP系统中，由于行业的特殊性，一张表动辄七八十个字段，难道你会为<code>Entity</code>一个一个的去写<code>set</code>和<code>get</code>方法？或者说使用一些工具去生成？反正我打死都不会干的，毕竟人类只有越来越“懒”，才会想尽一切办法去提高生产力。</p>
+<p>这篇文章暂且不谈<code>Lombok</code>的优劣，最近我在爬帖子时发现了一个注解，可以优雅的在 <code>Spring</code> 项目中进行 <code>Bean</code> 注入：<code>@RequiredArgsConstructor</code>，这个注解则由<code>Lombok</code>提供。从这个单词来理解，大致就是，<code>必须的参数构造器</code>，那么这个注解又是怎么和<code>Bean</code>注入扯上关系的？向下看。</p>
+<h1 id="Bean注入乱象"><a href="#Bean注入乱象" class="headerlink" title="Bean注入乱象"></a>Bean注入乱象</h1><p><code>Spring</code>提供了三种注入模式，一种是<code>属性注入</code>(Filed injection)，一种是通过<code>setter</code>方法，一种是<code>构造器注入</code>。就目前情况来看，许多的项目看起来应该是这样的：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ARepo aRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> BRepo bRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CRepo cRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> DRepo dRepo;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样的使用方法本身没有什么问题，看起来还蛮整洁哈，可真实项目里却是这样的：</p>
+<p><img    class="lazyload" data-original="https://i.loli.net/2020/10/30/prTUYI6gBobwP9F.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">真实项目截图</span></p>
+<p><code>Spring</code>从4.0开始，<strong>就 不 推 荐 使 用 属 性 注 入 模 式 了，</strong>原因是它可以让我们忽略掉一些代码可能变坏的隐患，同时这样的写法也使<code>IDEA</code>向你发出<code>黄色警告</code>!</p>
+<p>既然<code>Spring</code>推荐使用显式的<code>Setter</code>和<code>构造器方式</code>，那我们就切换一下实现方案。</p>
+<h1 id="这个样子很优雅"><a href="#这个样子很优雅" class="headerlink" title="这个样子很优雅"></a>这个样子很优雅</h1><p><code>Setter</code>方式显然不可能，我可不想把<code>Setter</code>代码生成工具玩到吐，那么就剩下了<code>构造器方式</code>，就像这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>或者……像这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ERepo eRepo;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserServiceImpl</span> <span class="hljs-params">(ARepo aRepo,BRepo bRepo,CRepo cRepo</span><br><span class="hljs-params">                            ,DRepo dRepo,ERepo eRepo)</span> &#123;<br>        <span class="hljs-built_in">this</span>.aRepo = aRepo;<br>        <span class="hljs-built_in">this</span>.bRepo = bRepo;<br>        <span class="hljs-built_in">this</span>.cRepo = cRepo;<br>        <span class="hljs-built_in">this</span>.dRepo = dRepo;<br>        <span class="hljs-built_in">this</span>.eRepo = eRepo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>emmm，要是这样的话，我宁愿用<code>@Autowired</code>。</p>
+<p>当注入的<code>Bean</code>变多之后，构造器便显得超级臃肿，这个时候<code>@RequiredArgsConstructor</code>就派上了大用场，来看：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">final</span> ARepo aRepo;<br>    <span class="hljs-keyword">final</span> BRepo bRepo;<br>    <span class="hljs-keyword">final</span> CRepo cRepo;<br>    <span class="hljs-keyword">final</span> DRepo dRepo;<br>    <span class="hljs-keyword">final</span> ERepo eRepo;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>嗯，这才是我们想要的样子，相信聪明的你已经明白了<code>@RequiredArgsConstructor</code>会在编译时帮你生成那个又臭又长的构造器，达到了<code>Bean</code>注入的目的。</p>
+<p>好了，如此优雅的注入，还不快拿去享用。</p>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 基础</tag>
       </tags>
   </entry>
 </search>
