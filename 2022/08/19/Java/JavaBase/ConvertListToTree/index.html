@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>将List转换为树形结构 - zyan</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="在 Java 中，把List 转换为多级的树形结构非常...">
+  <meta name="author" content="zyan">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="16x16">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" sizes="180x180">
+  <meta rel="mask-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/github-dark-dimmed.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/github-dark-dimmed.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'true',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '愿你我既可以朝九晚五，又能够浪迹天涯',
+          typing: true,
+          api: '',
+          data_contents: ''
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'normal'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: true,
+        path: '/search.xml'
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+        <i class="iconfont iconsearch j-navbar-search"></i>
+      
+    </div>
+    <div class="center">将List转换为树形结构</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a target="_blank" rel="noopener" href="https://unsplash.com/@zyan1226 " class="underline "> Unsplash</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344/posts">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-8"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img src="/images/theme/post-image.jpg" draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">将List转换为树形结构</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>八月 19, 2022</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>2468</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <p>在 Java 中，把<code>List</code> 转换为多级的树形结构非常常见。例如菜单数据是在数据库中“平铺”存储的，在做查询时，需要将其转换为树形结构，方便前端进行展示。</p>
+<p>本文就以菜单作为案例，读者可以举一反三，实现自己的需求</p>
+<h1 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h1><p>将其命名为<code>PERMISSIONS</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">字段名</th>
+<th align="left">类型</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CODE</td>
+<td align="left">varchar</td>
+<td align="left">编码(主键)</td>
+</tr>
+<tr>
+<td align="left">PARENT_CODE</td>
+<td align="left">varchar</td>
+<td align="left">父编码</td>
+</tr>
+<tr>
+<td align="left">NAME</td>
+<td align="left">varchar</td>
+<td align="left">名称</td>
+</tr>
+<tr>
+<td align="left">TYPE</td>
+<td align="left">tinyint</td>
+<td align="left">类型 0菜单 1按钮 2接口</td>
+</tr>
+<tr>
+<td align="left">URL</td>
+<td align="left">varchar</td>
+<td align="left">前端路由或后端接口路由</td>
+</tr>
+<tr>
+<td align="left">CREATE_TIME</td>
+<td align="left">datetime</td>
+<td align="left">创建时间</td>
+</tr>
+<tr>
+<td align="left">UPDATE_TIME</td>
+<td align="left">datetime</td>
+<td align="left">更新时间</td>
+</tr>
+</tbody></table>
+<h1 id="Java-处理"><a href="#Java-处理" class="headerlink" title="Java 处理"></a>Java 处理</h1><p>假设我们此时已经查询出一个列表<code>List&lt;Permissions&gt;</code>，<code>Permissions</code>类是与数据库对应的实体类，包含了<code>PERMISSIONS</code>表的所有字段，此刻就需要对其进行树形结构处理。</p>
+<h2 id="树形结构实体类"><a href="#树形结构实体类" class="headerlink" title="树形结构实体类"></a>树形结构实体类</h2><p>首先我们需要一个包含自身的树形结构实体类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 权限树内容</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@EqualsAndHashCode(callSuper = true)</span><br><span class="hljs-meta">@ApiModel(description = &quot;权限树内容&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PermissionsTreeRes</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Permissions</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">3107598961006613967L</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 权限树</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ApiModelProperty(&quot;权限树&quot;)</span><br>    <span class="hljs-keyword">private</span> List&lt;PermissionsTreeRes&gt; children;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>PermissionsTreeRes</code>继承了<code>Permissions</code>，即拥有了数据库表中的所有字段。其自身又包含了类型为<code>List&lt;PermissionsTreeRes&gt;</code>的<code>children</code>属性，即子节点。</p>
+<h2 id="代码处理"><a href="#代码处理" class="headerlink" title="代码处理"></a>代码处理</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> List&lt;PermissionsTreeRes&gt; <span class="hljs-title function_">buildPermissionsTree</span><span class="hljs-params">(List&lt;Permissions&gt; permissionsList)</span> &#123;<br>    <span class="hljs-keyword">return</span> permissionsList.stream().filter(permissions -&gt; ObjectUtils.isEmpty(permissions.getParentCod()))<br>            .map(permissions -&gt; &#123;<br>                <span class="hljs-type">PermissionsTreeRes</span> <span class="hljs-variable">treeRes</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PermissionsTreeRes</span>();<br>                BeanUtils.copyProperties(permissions, treeRes);<br>                treeRes.setChildren(<span class="hljs-built_in">this</span>.getPermissionsChildrenList(permissions.getCode(),permissionsList));<br>                <span class="hljs-keyword">return</span> treeRes;<br>            &#125;).collect(Collectors.toList());<br>&#125;<br><br><span class="hljs-keyword">private</span> List&lt;PermissionsTreeRes&gt; <span class="hljs-title function_">getPermissionsChildrenList</span><span class="hljs-params">(String code, List&lt;Permissions&gt;permissionsList)</span> &#123;<br>    <span class="hljs-keyword">return</span> permissionsList.stream().filter(permissions -&gt; StringUtils.equals(permissions.getParentCode(),code))<br>            .map(permissions -&gt; &#123;<br>                <span class="hljs-type">PermissionsTreeRes</span> <span class="hljs-variable">treeRes</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PermissionsTreeRes</span>();<br>                BeanUtils.copyProperties(permissions, treeRes);<br>                treeRes.setChildren(<span class="hljs-built_in">this</span>.getPermissionsChildrenList(permissions.getCode(),permissionsList));<br>                <span class="hljs-keyword">return</span> treeRes;<br>            &#125;).collect(Collectors.toList());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>buildPermissionsTree()</code>方法内使用<code>ObjectUtils.isEmpty(permissions.getParentCod())</code>条件筛选出所有父编码为空的数据，即一级菜单数据。遍历中的<code>setChildren()</code>调用了<code>getPermissionsChildrenList()</code>方法，并传入自身的<code>CODE</code>，去寻找自己的子节点。</p>
+</li>
+<li><p><code>getPermissionsChildrenList()</code>方法内使用递归不断的向下查找，直至<code>filter</code>后再无数据，便停止递归，进入下一次遍历。</p>
+</li>
+</ul>
+
+      </section>
+      <section class="extra">
+        
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%9F%BA%E7%A1%80/" rel="tag">Java 基础</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/2022/08/18/Spring/base/StandardApi/">相对规范的服务API应如何实现<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: 'a5bf4e51840a753f6321',
+      clientSecret: '5f6d66a8399eeca0ef8206239c40032e4e082ffa',
+      id: window.location.pathname,
+      repo: 'gitalk',
+      owner: 'zyan1226',
+      admin: 'zyan1226'
+    });
+    if ( false ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1"><span class="toc-text">数据库设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-%E5%A4%84%E7%90%86"><span class="toc-text">Java 处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">树形结构实体类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%A4%84%E7%90%86"><span class="toc-text">代码处理</span></a></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1113882975 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  iconQQ"></i>
+      </a><a 
+        href="https://github.com/zyan1226 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  icongithub-fill"></i>
+      </a><a 
+        href="mailto:zyan1226@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344/posts">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2022 zyan. 保留所有权利。</div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+    <div class="search">
+  <div class="search-container">
+    <div class="search-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <div class="search-input-wrapper">
+      <i class="search-input-icon iconfont iconsearch"></i>
+      <input class="search-input" type="search" id="search-input" placeholder="Search..." autofocus autocomplete="off"
+        autocorrect="off" autocapitalize="off">
+    </div>
+    <div class="search-output" id="search-output"></div>
+  </div>
+</div>
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script defer src='https://hm.baidu.com/hm.js?2bac3d80813084efd7f9788ca0682f2a'></script>
+
+
+
+
+
+
+
+
+
+
+
+</html>
