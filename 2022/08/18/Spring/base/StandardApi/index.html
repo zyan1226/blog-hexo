@@ -205,7 +205,7 @@
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>八月 18, 2022</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>10406</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>10405</span>
     </div>
   </div>
 </section>
@@ -221,7 +221,7 @@
 <p>这是一个简单的<code>ApiResult</code>示例，你所开发的每一个接口响应参数都应该是它，它是<strong>处于顶层的响应参数结构</strong>，通过指定不同的泛型适应各个接口的需求。各个参数作用如下:</p>
 <ul>
 <li>status <strong>状态码</strong>，用不同的数字表示当前接口处理完成后的结果状态。请不要与 Http 的状态混为一谈，我们不希望直接使用 Http 的状态来表示。 Http 的状态每次请求都应该是 200 的，处理的结果应由响应参数来体现。</li>
-<li>msg <strong>信息</strong>，后端服务提示用户消息的主要途径，因为许多的提示信息（正确或错误）都是在后端程序执行过程中才会出现。一般这个信息前端需要使用弹窗、横幅或其他手段去传达给用户的。</li>
+<li>msg <strong>信息</strong>，后端服务提示用户消息的主要途径，因为许多的提示信息（正确或错误）都是在后端程序执行过程中才会出现。一般这个信息前端需要使用弹窗、横幅或其他手段去传达给用户。</li>
 <li>payload <strong>响应数据</strong>，这个参数可以是任何数据类型，它是接口响应的具体业务数据。</li>
 <li>exception <strong>程序异常信息</strong>，结合自己的开发经验，觉得需要这样一个参数来帮助开发者更快的定位问题。例如发生某个异常，这个参数可以是该异常的具体信息<code>e.getMessage()</code>，所以开发人员只需通过浏览器开发者工具就能找到发生异常的原因。注意这个信息是不能传达给用户的！</li>
 </ul>
