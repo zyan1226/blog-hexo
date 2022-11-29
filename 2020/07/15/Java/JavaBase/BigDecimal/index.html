@@ -202,7 +202,7 @@
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>七月 15, 2020</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4696</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4744</span>
     </div>
   </div>
 </section>
@@ -230,7 +230,7 @@
 <p>运行结果</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">99</span>.<span class="hljs-number">599999999999994315658113919198513031005859375</span><br></code></pre></td></tr></table></figure>
 
-<p>问题立刻显现出来，使用 Double 型数据初始化 Bigdecimal 是不精确的，会损失精度。这不是 BigDecimal 的问题，而属于 Double 本身。在 IDEA 中，使用 Double 初始化时，则会“报黄”警告。<mark style="background-color:pink;">所以请务必使用 String 初始化 BigDecimal !</mark></p>
+<p>问题立刻显现出来，使用 Double 型数据初始化 Bigdecimal 是不精确的，会损失精度。这不是 BigDecimal 的问题，而属于 Double 本身。在 IDEA 中，使用 Double 初始化时，则会“报黄”警告。&#x3D;&#x3D;所以请务必使用 String 初始化 BigDecimal !&#x3D;&#x3D;</p>
 <p><img  src="https://i.loli.net/2020/07/15/iGtUM7VnseTyJSc.png"  ><span class="image-caption">IDEA 警告</span></p>
 <h1 id="建议的数据库解决方案"><a href="#建议的数据库解决方案" class="headerlink" title="建议的数据库解决方案"></a>建议的数据库解决方案</h1><p>基于上一部分得到的结论，建议在数据库中使用<code> VARCHAR</code> 类型或者 <code>DECIMAL</code>，这里以 MySQL + MyBatis 为例。</p>
 <table>
@@ -258,7 +258,7 @@
 <p>运行结果</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">32</span>.<span class="hljs-number">7</span><br><span class="hljs-attribute">99</span>.<span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
 
-<p>此处需要注意的是，<mark style="background-color:pink;">所有的运算方法在执行后并不会影响参与计算的数，他只会将计算结果返回！</mark></p>
+<p>此处需要注意的是，&#x3D;&#x3D;所有的运算方法在执行后并不会影响参与计算的数，他只会将计算结果返回！&#x3D;&#x3D;</p>
 <p>你可以使用新的对象来接受，或者覆盖旧的对象。</p>
 <p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>

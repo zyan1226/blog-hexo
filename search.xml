@@ -1,64 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>数据结构之数组</title>
-    <url>/2022/08/21/Algorithm/DataStructure/Array/</url>
-    <content><![CDATA[<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><blockquote>
-<p>数组是一种数据结构，是有限个相同类型的变量所组成的有序集合，数组中的每一个变量被称为元素。</p>
-</blockquote>
-<p>以整型数组为例，数组的存储形式如下图所示：</p>
-<table>
-<thead>
-<tr>
-<th>数据</th>
-<th>2</th>
-<th>3</th>
-<th>6</th>
-<th>1</th>
-<th>4</th>
-<th>0</th>
-<th>6</th>
-<th>8</th>
-<th>2</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>下标</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>5</td>
-<td>6</td>
-<td>7</td>
-<td>8</td>
-</tr>
-</tbody></table>
-<p>如你所见，数组的每一个元素都存在一个相应的“编号”，就是<strong>下标。下标从0开始，一直到数组的长度-1。</strong></p>
-<p>数组在内存中是<strong>顺序存储的</strong>，而内存是由一个个连续的<strong>内存单元</strong>组成，每一个内存单元都有自己的地址。数组中的每一元素都存储在内存单元中，而且元素之间紧密排列，既不能打乱元素的存储顺序，也不能跳过某个存储单元进行存储。</p>
-<p><img    class="lazyload" data-original="https://s2.loli.net/2022/08/21/SiIxbFyO72vRsDz.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">数组存储示意图</span></p>
-<p>在上图中，巧克力黄色的格子代表空闲的存储单元，灰色的格子代表已占用的存储单元，而淡绿色的连续格子代表数组在内存中的位置。</p>
-<h1 id="读取元素"><a href="#读取元素" class="headerlink" title="读取元素"></a>读取元素</h1><p>读取元素是数组最简单的操作，由于数组在内存中顺序存储，所以只要给出一个数组下标，就可以读取到对应的数组元素。</p>
-<p>假设有一个名为<code>array</code>的数组，想要读取数组下标为4的元素，就写作<code>array[4]</code>。</p>
-<p>值得注意的是，输入的下标必须在数组的长度范围之内，否则会出现数组越界！如果数组的长度为x，输入的下标为y，那么结合下标从0开始的特点，就可以得出<strong>y<sub>max</sub>&#x3D;x-1</strong>。</p>
-<p>简单的代码示例如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>&#125;;<br><span class="hljs-comment">//打印数组中下标为4的元素</span><br>System.out.println(array[<span class="hljs-number">4</span>]);<br></code></pre></td></tr></table></figure>
-
-<h1 id="更新元素"><a href="#更新元素" class="headerlink" title="更新元素"></a>更新元素</h1><p>更新元素也是非常简单的操作，直接利用下标就可以把新值赋给该元素。</p>
-<p>简单的代码示例如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>&#125;;<br><span class="hljs-comment">//为数组下标为2的元素赋上新值</span><br>array[<span class="hljs-number">2</span>] = <span class="hljs-number">10</span>;<br><span class="hljs-comment">//打印数组中下标为2的元素</span><br>System.out.println(array[<span class="hljs-number">2</span>]);<br></code></pre></td></tr></table></figure>
-
-<p>待完成……</p>
-<h1 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h1><h1 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h1><h1 id="数组的优势和劣势"><a href="#数组的优势和劣势" class="headerlink" title="数组的优势和劣势"></a>数组的优势和劣势</h1>]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java 基础</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>学会使用 BigDecimal</title>
     <url>/2020/07/15/Java/JavaBase/BigDecimal/</url>
     <content><![CDATA[<p><code>BigDecimal</code> 是 Java 提供的一个关于小数精确计算的类，其位于<code>java.math</code>包下。</p>
@@ -83,7 +25,7 @@
 <p>运行结果</p>
 <figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">99</span>.<span class="hljs-number">599999999999994315658113919198513031005859375</span><br></code></pre></td></tr></table></figure>
 
-<p>问题立刻显现出来，使用 Double 型数据初始化 Bigdecimal 是不精确的，会损失精度。这不是 BigDecimal 的问题，而属于 Double 本身。在 IDEA 中，使用 Double 初始化时，则会“报黄”警告。<mark style="background-color:pink;">所以请务必使用 String 初始化 BigDecimal !</mark></p>
+<p>问题立刻显现出来，使用 Double 型数据初始化 Bigdecimal 是不精确的，会损失精度。这不是 BigDecimal 的问题，而属于 Double 本身。在 IDEA 中，使用 Double 初始化时，则会“报黄”警告。&#x3D;&#x3D;所以请务必使用 String 初始化 BigDecimal !&#x3D;&#x3D;</p>
 <p><img    class="lazyload" data-original="https://i.loli.net/2020/07/15/iGtUM7VnseTyJSc.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">IDEA 警告</span></p>
 <h1 id="建议的数据库解决方案"><a href="#建议的数据库解决方案" class="headerlink" title="建议的数据库解决方案"></a>建议的数据库解决方案</h1><p>基于上一部分得到的结论，建议在数据库中使用<code> VARCHAR</code> 类型或者 <code>DECIMAL</code>，这里以 MySQL + MyBatis 为例。</p>
 <table>
@@ -111,7 +53,7 @@
 <p>运行结果</p>
 <figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">32</span>.<span class="hljs-number">7</span><br><span class="hljs-attribute">99</span>.<span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
 
-<p>此处需要注意的是，<mark style="background-color:pink;">所有的运算方法在执行后并不会影响参与计算的数，他只会将计算结果返回！</mark></p>
+<p>此处需要注意的是，&#x3D;&#x3D;所有的运算方法在执行后并不会影响参与计算的数，他只会将计算结果返回！&#x3D;&#x3D;</p>
 <p>你可以使用新的对象来接受，或者覆盖旧的对象。</p>
 <p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;99.6&quot;</span>);<br>bigDecimal = bigDecimal.subtract(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;66.9&quot;</span>));<br>System.out.println(bigDecimal.toString());<br></code></pre></td></tr></table></figure>
@@ -386,6 +328,64 @@
 <p>此处需要注意的是，经过实践，<code>@FunctionalInterface</code>注解并不是必须的，出于习惯的原因，我都会加上该注解。</p>
 <p><strong>自定义函数式接口需要满足：有且只有一个未实现的方法。</strong></p>
 ]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java 基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构之数组</title>
+    <url>/2022/08/21/Algorithm/DataStructure/Array/</url>
+    <content><![CDATA[<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><blockquote>
+<p>数组是一种数据结构，是有限个相同类型的变量所组成的有序集合，数组中的每一个变量被称为元素。</p>
+</blockquote>
+<p>以整型数组为例，数组的存储形式如下图所示：</p>
+<table>
+<thead>
+<tr>
+<th>数据</th>
+<th>2</th>
+<th>3</th>
+<th>6</th>
+<th>1</th>
+<th>4</th>
+<th>0</th>
+<th>6</th>
+<th>8</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>下标</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+</tr>
+</tbody></table>
+<p>如你所见，数组的每一个元素都存在一个相应的“编号”，就是<strong>下标。下标从0开始，一直到数组的长度-1。</strong></p>
+<p>数组在内存中是<strong>顺序存储的</strong>，而内存是由一个个连续的<strong>内存单元</strong>组成，每一个内存单元都有自己的地址。数组中的每一元素都存储在内存单元中，而且元素之间紧密排列，既不能打乱元素的存储顺序，也不能跳过某个存储单元进行存储。</p>
+<p><img    class="lazyload" data-original="https://s2.loli.net/2022/08/21/SiIxbFyO72vRsDz.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">数组存储示意图</span></p>
+<p>在上图中，巧克力黄色的格子代表空闲的存储单元，灰色的格子代表已占用的存储单元，而淡绿色的连续格子代表数组在内存中的位置。</p>
+<h1 id="读取元素"><a href="#读取元素" class="headerlink" title="读取元素"></a>读取元素</h1><p>读取元素是数组最简单的操作，由于数组在内存中顺序存储，所以只要给出一个数组下标，就可以读取到对应的数组元素。</p>
+<p>假设有一个名为<code>array</code>的数组，想要读取数组下标为4的元素，就写作<code>array[4]</code>。</p>
+<p>值得注意的是，输入的下标必须在数组的长度范围之内，否则会出现数组越界！如果数组的长度为x，输入的下标为y，那么结合下标从0开始的特点，就可以得出<strong>y<sub>max</sub>&#x3D;x-1</strong>。</p>
+<p>简单的代码示例如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>&#125;;<br><span class="hljs-comment">//打印数组中下标为4的元素</span><br>System.out.println(array[<span class="hljs-number">4</span>]);<br></code></pre></td></tr></table></figure>
+
+<h1 id="更新元素"><a href="#更新元素" class="headerlink" title="更新元素"></a>更新元素</h1><p>更新元素也是非常简单的操作，直接利用下标就可以把新值赋给该元素。</p>
+<p>简单的代码示例如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>&#125;;<br><span class="hljs-comment">//为数组下标为2的元素赋上新值</span><br>array[<span class="hljs-number">2</span>] = <span class="hljs-number">10</span>;<br><span class="hljs-comment">//打印数组中下标为2的元素</span><br>System.out.println(array[<span class="hljs-number">2</span>]);<br></code></pre></td></tr></table></figure>
+
+<p>待完成……</p>
+<h1 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h1><h1 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h1><h1 id="数组的优势和劣势"><a href="#数组的优势和劣势" class="headerlink" title="数组的优势和劣势"></a>数组的优势和劣势</h1>]]></content>
       <categories>
         <category>Java</category>
       </categories>
