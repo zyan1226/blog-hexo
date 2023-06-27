@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>数据结构之链表 - zyan</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="“正规军”和“地下党”
+如果说数组是纪律严明的 🪖 ...">
+  <meta name="author" content="zyan">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="16x16">
+  <link rel="icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" sizes="180x180">
+  <meta rel="mask-icon" href="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="https://s2.loli.net/2022/01/24/zZjtA51NqiOEQDB.jpg">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/github-dark-dimmed.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/github-dark-dimmed.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'true',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '愿你我既可以朝九晚五，又能够浪迹天涯',
+          typing: true,
+          api: '',
+          data_contents: ''
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'normal'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: true,
+        path: '/search.xml'
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+        <i class="iconfont iconsearch j-navbar-search"></i>
+      
+    </div>
+    <div class="center">数据结构之链表</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344/posts">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2023 zyan. 保留所有权利。</div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-8"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img src="https://images.unsplash.com/photo-1488272690691-2636704d6000?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGlua2VkfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60" draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">数据结构之链表</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>六月 27, 2023</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>1034</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h1 id="“正规军”和“地下党”"><a href="#“正规军”和“地下党”" class="headerlink" title="“正规军”和“地下党”"></a>“正规军”和“地下党”</h1><blockquote>
+<p>如果说数组是纪律严明的 🪖 “正规军”，那么链表就是灵活多变的“地下党”。</p>
+</blockquote>
+<p>地下党借助 📞 <strong>单线联络</strong>的方式，灵活隐秘地传递着各种重要信息。在计算机科学领域里，有一种数据结构也恰恰具备这样的特征，这种数据结构就是 ⛓️ <strong>链表</strong>。</p>
+<h2 id="➡️-单向链表"><a href="#➡️-单向链表" class="headerlink" title="➡️ 单向链表"></a>➡️ 单向链表</h2><p>链表是什么样子的？为什么说它像地下党呢？我们先来看看<strong>单向链表</strong>的结构。</p>
+<p><img  src="https://s2.loli.net/2023/06/27/cyWo1a8UJ3sFjMD.png"  ><span class="image-caption">单向链表结构图</span></p>
+<p>链表是一种在物理上非连续、非顺序的数据结构，由若干节点所组成。</p>
+<p><strong>单向链表</strong>的每一个节点包含两部分，一部分是存放数据的的变量data，另一部分是指向下一个节点的指针next。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&#123;<br>    <span class="hljs-type">int</span> data;<br>    Node next;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>链表的第一个节点被称为头节点，最后一个节点被称为尾节点，尾节点的next指针指向空。</p>
+<p>与数组按照下标来随机寻找元素不同，对于寻找链表的其中一个节点X，我们只能根据头节点A的next指针来找到该节点的下一个节点B，再根据节点B的next指针来找到该节点的下一个节点C……</p>
+<p>这正如地下党的联络方式，一级一级，单线传递。</p>
+<blockquote>
+<p>相对于数组而言，链表因层级分明导致其繁杂低效，所以链表的查询效率是偏低的。</p>
+</blockquote>
+<h2 id="↔️-双向链表"><a href="#↔️-双向链表" class="headerlink" title="↔️ 双向链表"></a>↔️ 双向链表</h2><p>在单向链表的机制中，地下党成员都只了解自己的下级信息，并不了解自己的上级信息。</p>
+<p>要想让每个节点都能 ⬅️ 回溯到它的前置节点，我们可以使用<strong>双向链表</strong>。双向链表的每一个节点除了拥有data和next指针，还拥有指向前置节点的prev指针。</p>
+<p><img  src="https://s2.loli.net/2023/06/27/7ax39kWopGfzdX2.png"  ><span class="image-caption">双向链表结构图</span></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&#123;<br>    Node prev;<br>    <span class="hljs-type">int</span> data;<br>    Node next;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="💾-链表的存储方式"><a href="#💾-链表的存储方式" class="headerlink" title="💾 链表的存储方式"></a>💾 链表的存储方式</h2><p>数组在内存中占用了连续完整的存储空间，所以它的存储方式成为顺序存储。而链表则采用了💉见缝插针的方式，链表的每一个节点分布在内存的不同位置，依靠next指针关联起来。这样可以灵活有效地利用零散的 🧩 碎片空间。</p>
+<p>我们看看下面这样图，对比一下数组和链表在内存中分配方式的不同。</p>
+<p>巧克力黄色的格子代表空闲的存储单元，灰色的格子代表已占用的存储单元，而淡绿色的格子代表数据在内存中的位置，红色箭头代表链表节点的next指针。</p>
+<p><img  src="https://s2.loli.net/2022/08/21/SiIxbFyO72vRsDz.png"  ><span class="image-caption">数组内存分配示意图</span></p>
+<p><img  src="https://s2.loli.net/2023/06/27/Dv6lOxHEp4T7aRU.jpg"  ><span class="image-caption">链表内存分配示意图</span></p>
+<h1 id="链表的基本操作"><a href="#链表的基本操作" class="headerlink" title="链表的基本操作"></a>链表的基本操作</h1><p><em>待完成……</em></p>
+<br/>
+
+<p><em>参考文献：《小灰的算法之旅》—— 魏梦舒（@程序员小灰）</em></p>
+
+      </section>
+      <section class="extra">
+        
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="tag">算法基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/2023/04/08/Algorithm/DataStructure/Array/">数据结构之数组<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: 'a5bf4e51840a753f6321',
+      clientSecret: '5f6d66a8399eeca0ef8206239c40032e4e082ffa',
+      id: window.location.pathname,
+      repo: 'gitalk',
+      owner: 'zyan1226',
+      admin: 'zyan1226'
+    });
+    if ( false ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E2%80%9C%E6%AD%A3%E8%A7%84%E5%86%9B%E2%80%9D%E5%92%8C%E2%80%9C%E5%9C%B0%E4%B8%8B%E5%85%9A%E2%80%9D"><span class="toc-text">“正规军”和“地下党”</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9E%A1%EF%B8%8F-%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8"><span class="toc-text">➡️ 单向链表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%86%94%EF%B8%8F-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8"><span class="toc-text">↔️ 双向链表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%BE-%E9%93%BE%E8%A1%A8%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="toc-text">💾 链表的存储方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">链表的基本操作</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1113882975 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  iconQQ"></i>
+      </a><a 
+        href="https://github.com/zyan1226 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  icongithub-fill"></i>
+      </a><a 
+        href="mailto:zyan1226@163.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#e94328" 
+        onMouseOut="this.style.color='#18191b'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><a target="_blank" href="https://space.bilibili.com/124493907">哔哩哔哩</a>  |  <a target="_blank" href="https://juejin.cn/user/3702810895726344/posts">掘金</a>  |  <a target="_blank" href="https://gitee.com/zyan1226">Gitee</a>  |  <a target="_blank" href="https://unsplash.com/@zyan1226">Unsplash</a>  |  <a target="_blank" href="/about">关于</a><br/><br/>Copyright © 2023 zyan. 保留所有权利。</div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+    <div class="search">
+  <div class="search-container">
+    <div class="search-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <div class="search-input-wrapper">
+      <i class="search-input-icon iconfont iconsearch"></i>
+      <input class="search-input" type="search" id="search-input" placeholder="Search..." autofocus autocomplete="off"
+        autocorrect="off" autocapitalize="off">
+    </div>
+    <div class="search-output" id="search-output"></div>
+  </div>
+</div>
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script defer src='https://hm.baidu.com/hm.js?2bac3d80813084efd7f9788ca0682f2a'></script>
+
+
+
+
+
+
+
+
+
+
+
+</html>
