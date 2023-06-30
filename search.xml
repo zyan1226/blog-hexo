@@ -90,7 +90,7 @@
 <p>如果说数组是纪律严明的 🪖 “正规军”，那么链表就是灵活多变的“地下党”。</p>
 </blockquote>
 <p>地下党借助 📞 <strong>单线联络</strong>的方式，灵活隐秘地传递着各种重要信息。在计算机科学领域里，有一种数据结构也恰恰具备这样的特征，这种数据结构就是 ⛓️ <strong>链表</strong>。</p>
-<h2 id="➡️-单向链表"><a href="#➡️-单向链表" class="headerlink" title="➡️ 单向链表"></a>➡️ 单向链表</h2><p>链表是什么样子的？为什么说它像地下党呢？我们先来看看<strong>单向链表</strong>的结构。</p>
+<h2 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h2><p>链表是什么样子的？为什么说它像地下党呢？我们先来看看<strong>单向链表</strong>的结构。</p>
 <p><img    class="lazyload" data-original="https://s2.loli.net/2023/06/27/cyWo1a8UJ3sFjMD.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">单向链表结构图</span></p>
 <p>链表是一种在物理上非连续、非顺序的数据结构，由若干节点所组成。</p>
 <p><strong>单向链表</strong>的每一个节点包含两部分，一部分是存放数据的的变量data，另一部分是指向下一个节点的指针next。</p>
@@ -101,19 +101,19 @@
 <blockquote>
 <p>相对于数组而言，链表因层级分明导致其繁杂低效，所以链表的查询效率是偏低的。</p>
 </blockquote>
-<h2 id="↔️-双向链表"><a href="#↔️-双向链表" class="headerlink" title="↔️ 双向链表"></a>↔️ 双向链表</h2><p>在单向链表的机制中，地下党成员都只了解自己的下级信息，并不了解自己的上级信息。</p>
+<h2 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h2><p>在单向链表的机制中，地下党成员都只了解自己的下级信息，并不了解自己的上级信息。</p>
 <p>要想让每个节点都能 ⬅️ 回溯到它的前置节点，我们可以使用<strong>双向链表</strong>。双向链表的每一个节点除了拥有data和next指针，还拥有指向前置节点的prev指针。</p>
 <p><img    class="lazyload" data-original="https://s2.loli.net/2023/06/27/7ax39kWopGfzdX2.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">双向链表结构图</span></p>
 <figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&#123;<br>    Node prev;<br>    <span class="hljs-type">int</span> data;<br>    Node next;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="💾-链表的存储方式"><a href="#💾-链表的存储方式" class="headerlink" title="💾 链表的存储方式"></a>💾 链表的存储方式</h2><p>数组在内存中占用了连续完整的存储空间，所以它的存储方式成为顺序存储。而链表则采用了💉见缝插针的方式，链表的每一个节点分布在内存的不同位置，依靠next指针关联起来。这样可以灵活有效地利用零散的 🧩 碎片空间。</p>
+<h2 id="链表的存储方式"><a href="#链表的存储方式" class="headerlink" title="链表的存储方式"></a>链表的存储方式</h2><p>数组在内存中占用了连续完整的存储空间，所以它的存储方式成为顺序存储。而链表则采用了💉见缝插针的方式，链表的每一个节点分布在内存的不同位置，依靠next指针关联起来。这样可以灵活有效地利用零散的 🧩 碎片空间。</p>
 <p>我们看看下面这样图，对比一下数组和链表在内存中分配方式的不同。</p>
 <p>巧克力黄色的格子代表空闲的存储单元，灰色的格子代表已占用的存储单元，而淡绿色的格子代表数据在内存中的位置，红色箭头代表链表节点的next指针。</p>
 <p><img    class="lazyload" data-original="https://s2.loli.net/2022/08/21/SiIxbFyO72vRsDz.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">数组内存分配示意图</span></p>
 <p><img    class="lazyload" data-original="https://s2.loli.net/2023/06/27/Dv6lOxHEp4T7aRU.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">链表内存分配示意图</span></p>
-<h1 id="链表的基本操作"><a href="#链表的基本操作" class="headerlink" title="链表的基本操作"></a>链表的基本操作</h1><h2 id="🔍-查找节点"><a href="#🔍-查找节点" class="headerlink" title="🔍 查找节点"></a>🔍 查找节点</h2><p>如前文所提到，在查找元素时，链表不像数组那样可以通过下标快速进行定位，只能从头节点开始向后一个一个节点逐一查找。最坏的时间复杂度是O(n)。</p>
-<h2 id="⬆️-更新节点"><a href="#⬆️-更新节点" class="headerlink" title="⬆️ 更新节点"></a>⬆️ 更新节点</h2><p>如果不考虑查找节点的过程，链表的更新过程会像数组那样简单，直接把旧数据替换成新数据即可。</p>
-<h2 id="➕-插入节点"><a href="#➕-插入节点" class="headerlink" title="➕ 插入节点"></a>➕ 插入节点</h2><h3 id="尾部插入"><a href="#尾部插入" class="headerlink" title="尾部插入"></a>尾部插入</h3><p>尾部插入是最简单的情况，把最后一个节点的的next指针指向新插入的节点即可。</p>
+<h1 id="链表的基本操作"><a href="#链表的基本操作" class="headerlink" title="链表的基本操作"></a>链表的基本操作</h1><h2 id="查找节点"><a href="#查找节点" class="headerlink" title="查找节点"></a>查找节点</h2><p>如前文所提到，在查找元素时，链表不像数组那样可以通过下标快速进行定位，只能从头节点开始向后一个一个节点逐一查找。最坏的时间复杂度是O(n)。</p>
+<h2 id="更新节点"><a href="#更新节点" class="headerlink" title="更新节点"></a>更新节点</h2><p>如果不考虑查找节点的过程，链表的更新过程会像数组那样简单，直接把旧数据替换成新数据即可。</p>
+<h2 id="插入节点"><a href="#插入节点" class="headerlink" title="插入节点"></a>插入节点</h2><h3 id="尾部插入"><a href="#尾部插入" class="headerlink" title="尾部插入"></a>尾部插入</h3><p>尾部插入是最简单的情况，把最后一个节点的的next指针指向新插入的节点即可。</p>
 <p><img    class="lazyload" data-original="https://s2.loli.net/2023/06/30/bDSrAMHhXwGOfaC.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">链表尾部插入步骤图</span></p>
 <h3 id="头部插入"><a href="#头部插入" class="headerlink" title="头部插入"></a>头部插入</h3><p>头部插入分为两个步骤。</p>
 <p>第1步，把新节点的next指针指向原先的头节点。</p>
@@ -123,7 +123,7 @@
 <p>第1步，新节点的next指针指向插入位置的节点。</p>
 <p>第2步，插入位置前置节点的next指针指向新节点。</p>
 <p><img    class="lazyload" data-original="https://s2.loli.net/2023/06/30/sQSuyVdeiwGKkNT.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">链表中间插入步骤图</span></p>
-<h2 id="❌-删除节点"><a href="#❌-删除节点" class="headerlink" title="❌ 删除节点"></a>❌ 删除节点</h2><p><em>待完成……</em></p>
+<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><p><em>待完成……</em></p>
 <br/>
 
 <p><em>参考文献：《小灰的算法之旅》—— 魏梦舒（@程序员小灰）</em></p>
@@ -135,6 +135,46 @@
         <tag>算法基础</tag>
         <tag>数据结构</tag>
         <tag>链表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决 Spring 配置文件警告</title>
+    <url>/2022/03/10/Spring/correlation/SolveYmalWarn/</url>
+    <content><![CDATA[<p>Spring 项目默认是使用<code>.properties</code>文件作为配置文件的，但是我们习惯上会更多的使用<code>.yml</code>文件，因为其可以体现出配置项的树形结构，可读性较强。</p>
+<h1 id="配置文件乱象"><a href="#配置文件乱象" class="headerlink" title="配置文件乱象"></a>配置文件乱象</h1><p>一般在配置数据源、端口号、服务名称这些配置时并不会出现黄色警告，但是一些自定义的配置项则会出现<code>一片黄色的骇人景象</code>。</p>
+<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/HF7eK4CEIAsTL5y.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">正常的项目配置</span></p>
+<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/5Mxg2oscKYwlab8.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">自定义的配置项</span></p>
+<p>虽然有警告，但是这并不是致命错误，因为你仍然可以正常的使用 <code>@Value(&quot;$&#123;test.a&#125;&quot;)</code> 来取值，但是作为有代码洁癖的人，这不能忍！而且 <code>@Value</code> 这种方式很容易因大意导致名称不一致，进而引起无法取值。</p>
+<h1 id="主角登场"><a href="#主角登场" class="headerlink" title="主角登场"></a>主角登场</h1><p>我们先去没有警告的配置项 <code>spring.datasource.url</code> 代码内部，看看是怎么写的，能不能找点蛛丝马迹。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ConfigurationProperties(</span><br><span class="hljs-meta">    prefix = &quot;spring.datasource&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceProperties</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanClassLoaderAware</span>, InitializingBean &#123;<br>    <span class="hljs-keyword">private</span> ClassLoader classLoader;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">generateUniqueName</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">DataSource</span>&gt; type;<br>    <span class="hljs-keyword">private</span> String driverClassName;<br>    <span class="hljs-keyword">private</span> String url;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String password;<br>    <span class="hljs-keyword">private</span> String jndiName;<br>    <span class="hljs-comment">//省略后部代码........</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>英语稍懂一些就会立刻注意到 <code>@ConfigurationProperties</code> 这个注解，因为它与我们此次要解决的问题非常相近，翻译过来就是 <code>配置属性</code>。</p>
+<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><p>没错，<code>@ConfigurationProperties</code> 注解就是解决配置文件警告的关键，那么他是如何使用的？</p>
+<h2 id="关系映射实体类"><a href="#关系映射实体类" class="headerlink" title="关系映射实体类"></a>关系映射实体类</h2><p>像使用 <code>MyBatisPlus</code> 那样，我们需要先创建一个 <code>关系映射实体类</code>，目的是告诉 Spring，服务启动时你把哪些配置项的值给我塞到这个实体类中。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test.pojo.properties;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.NestedConfigurationProperty;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String aProperty;<br><br>    <span class="hljs-keyword">private</span> String b;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Boolean</span> <span class="hljs-variable">enable</span> <span class="hljs-operator">=</span> Boolean.FALSE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>需要注意这个实体类必须包含 <code>Setter</code> 和 <code>Getter</code> 方法，否则你将取不到值和无法取值。并且这个类必须使用 <code>@Component</code> 注解交由 Spring 管理，或者在服务启动类上使用 <code>@ConfigurationPropertiesScan</code> 注解进行扫描。</p>
+<p><code>@ConfigurationProperties</code> 注解的 <code>prefix</code> 用于指定配置项前缀，可以使用 <code>.</code> 进行多级指定。不能使用驼峰命名，只能使用 <code>-</code> 进行分词。</p>
+<p>可以直接在此类中为属性赋上默认值。</p>
+<h2 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TestProperties testProperties;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test</span><span class="hljs-params">()</span> &#123;<br>         System.out.println(<span class="hljs-string">&quot;配置项 test.enable 取值:&quot;</span> + testProperties.getEnable());<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>将 <code>TestProperties</code> 注入到适当的位置，通过 <code>Getter</code> 方法进行取值。此处使用 <code>@RequiredArgsConstructor</code> 进行构造器注入，想要详细了解使用方法，可阅读 <a href="/2020/10/30/Spring/base/RequiredArgsConstructor/">如何优雅的进行 Bean 注入</a>。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight yml"><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">a-property:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<p>按照习惯，建议在 <code>.yml</code> 文件中使用 <code>-</code> 进行分词，在实体类中使用驼峰命名，不要担心这样无法取值，<code>Spring</code> 会帮你进行转化，当然，你也可以选择不这么做。</p>
+<h1 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h1><h2 id="多级配置"><a href="#多级配置" class="headerlink" title="多级配置"></a>多级配置</h2><p>多级配置只需要引入静态内部类即可</p>
+<h3 id="映射类写法"><a href="#映射类写法" class="headerlink" title="映射类写法"></a>映射类写法</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Other other;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="yml-文件写法"><a href="#yml-文件写法" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other:</span><br>    <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="列表配置"><a href="#列表配置" class="headerlink" title="列表配置"></a>列表配置</h2><h3 id="映射类写法-1"><a href="#映射类写法-1" class="headerlink" title="映射类写法"></a>映射类写法</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> List&lt;Other&gt; otherList;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="yml-文件写法-1"><a href="#yml-文件写法-1" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other-list:</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring 相关</tag>
       </tags>
   </entry>
   <entry>
@@ -278,43 +318,73 @@
       </tags>
   </entry>
   <entry>
-    <title>解决 Spring 配置文件警告</title>
-    <url>/2022/03/10/Spring/correlation/SolveYmalWarn/</url>
-    <content><![CDATA[<p>Spring 项目默认是使用<code>.properties</code>文件作为配置文件的，但是我们习惯上会更多的使用<code>.yml</code>文件，因为其可以体现出配置项的树形结构，可读性较强。</p>
-<h1 id="配置文件乱象"><a href="#配置文件乱象" class="headerlink" title="配置文件乱象"></a>配置文件乱象</h1><p>一般在配置数据源、端口号、服务名称这些配置时并不会出现黄色警告，但是一些自定义的配置项则会出现<code>一片黄色的骇人景象</code>。</p>
-<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/HF7eK4CEIAsTL5y.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">正常的项目配置</span></p>
-<p><img    class="lazyload" data-original="https://s2.loli.net/2022/04/26/5Mxg2oscKYwlab8.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="   ><span class="image-caption">自定义的配置项</span></p>
-<p>虽然有警告，但是这并不是致命错误，因为你仍然可以正常的使用 <code>@Value(&quot;$&#123;test.a&#125;&quot;)</code> 来取值，但是作为有代码洁癖的人，这不能忍！而且 <code>@Value</code> 这种方式很容易因大意导致名称不一致，进而引起无法取值。</p>
-<h1 id="主角登场"><a href="#主角登场" class="headerlink" title="主角登场"></a>主角登场</h1><p>我们先去没有警告的配置项 <code>spring.datasource.url</code> 代码内部，看看是怎么写的，能不能找点蛛丝马迹。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ConfigurationProperties(</span><br><span class="hljs-meta">    prefix = &quot;spring.datasource&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceProperties</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanClassLoaderAware</span>, InitializingBean &#123;<br>    <span class="hljs-keyword">private</span> ClassLoader classLoader;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">generateUniqueName</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">DataSource</span>&gt; type;<br>    <span class="hljs-keyword">private</span> String driverClassName;<br>    <span class="hljs-keyword">private</span> String url;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String password;<br>    <span class="hljs-keyword">private</span> String jndiName;<br>    <span class="hljs-comment">//省略后部代码........</span><br>&#125;<br></code></pre></td></tr></table></figure>
+    <title>将List转换为树形结构</title>
+    <url>/2022/08/19/Java/JavaBase/ConvertListToTree/</url>
+    <content><![CDATA[<p>在 Java 中，把<code>List</code> 转换为多级的树形结构非常常见。例如菜单数据是在数据库中“平铺”存储的，在做查询时，需要将其转换为树形结构，方便前端进行展示。</p>
+<p>本文就以菜单作为案例，读者可以举一反三，实现自己的需求</p>
+<h1 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h1><p>将其命名为<code>PERMISSIONS</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">字段名</th>
+<th align="left">类型</th>
+<th align="left">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CODE</td>
+<td align="left">varchar</td>
+<td align="left">编码(主键)</td>
+</tr>
+<tr>
+<td align="left">PARENT_CODE</td>
+<td align="left">varchar</td>
+<td align="left">父编码</td>
+</tr>
+<tr>
+<td align="left">NAME</td>
+<td align="left">varchar</td>
+<td align="left">名称</td>
+</tr>
+<tr>
+<td align="left">TYPE</td>
+<td align="left">tinyint</td>
+<td align="left">类型 0菜单 1按钮 2接口</td>
+</tr>
+<tr>
+<td align="left">URL</td>
+<td align="left">varchar</td>
+<td align="left">前端路由或后端接口路由</td>
+</tr>
+<tr>
+<td align="left">CREATE_TIME</td>
+<td align="left">datetime</td>
+<td align="left">创建时间</td>
+</tr>
+<tr>
+<td align="left">UPDATE_TIME</td>
+<td align="left">datetime</td>
+<td align="left">更新时间</td>
+</tr>
+</tbody></table>
+<h1 id="Java-处理"><a href="#Java-处理" class="headerlink" title="Java 处理"></a>Java 处理</h1><p>假设我们此时已经查询出一个列表<code>List&lt;Permissions&gt;</code>，<code>Permissions</code>类是与数据库对应的实体类，包含了<code>PERMISSIONS</code>表的所有字段，此刻就需要对其进行树形结构处理。</p>
+<h2 id="树形结构实体类"><a href="#树形结构实体类" class="headerlink" title="树形结构实体类"></a>树形结构实体类</h2><p>首先我们需要一个包含自身的树形结构实体类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 权限树内容</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@EqualsAndHashCode(callSuper = true)</span><br><span class="hljs-meta">@ApiModel(description = &quot;权限树内容&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PermissionsTreeRes</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Permissions</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">3107598961006613967L</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 权限树</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ApiModelProperty(&quot;权限树&quot;)</span><br>    <span class="hljs-keyword">private</span> List&lt;PermissionsTreeRes&gt; children;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>PermissionsTreeRes</code>继承了<code>Permissions</code>，即拥有了数据库表中的所有字段。其自身又包含了类型为<code>List&lt;PermissionsTreeRes&gt;</code>的<code>children</code>属性，即子节点。</p>
+<h2 id="代码处理"><a href="#代码处理" class="headerlink" title="代码处理"></a>代码处理</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> List&lt;PermissionsTreeRes&gt; <span class="hljs-title function_">buildPermissionsTree</span><span class="hljs-params">(List&lt;Permissions&gt; permissionsList)</span> &#123;<br>    <span class="hljs-keyword">return</span> permissionsList.stream().filter(permissions -&gt; ObjectUtils.isEmpty(permissions.getParentCod()))<br>            .map(permissions -&gt; &#123;<br>                <span class="hljs-type">PermissionsTreeRes</span> <span class="hljs-variable">treeRes</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PermissionsTreeRes</span>();<br>                BeanUtils.copyProperties(permissions, treeRes);<br>                treeRes.setChildren(<span class="hljs-built_in">this</span>.getPermissionsChildrenList(permissions.getCode(),permissionsList));<br>                <span class="hljs-keyword">return</span> treeRes;<br>            &#125;).collect(Collectors.toList());<br>&#125;<br><br><span class="hljs-keyword">private</span> List&lt;PermissionsTreeRes&gt; <span class="hljs-title function_">getPermissionsChildrenList</span><span class="hljs-params">(String code, List&lt;Permissions&gt;permissionsList)</span> &#123;<br>    <span class="hljs-keyword">return</span> permissionsList.stream().filter(permissions -&gt; StringUtils.equals(permissions.getParentCode(),code))<br>            .map(permissions -&gt; &#123;<br>                <span class="hljs-type">PermissionsTreeRes</span> <span class="hljs-variable">treeRes</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PermissionsTreeRes</span>();<br>                BeanUtils.copyProperties(permissions, treeRes);<br>                treeRes.setChildren(<span class="hljs-built_in">this</span>.getPermissionsChildrenList(permissions.getCode(),permissionsList));<br>                <span class="hljs-keyword">return</span> treeRes;<br>            &#125;).collect(Collectors.toList());<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>英语稍懂一些就会立刻注意到 <code>@ConfigurationProperties</code> 这个注解，因为它与我们此次要解决的问题非常相近，翻译过来就是 <code>配置属性</code>。</p>
-<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><p>没错，<code>@ConfigurationProperties</code> 注解就是解决配置文件警告的关键，那么他是如何使用的？</p>
-<h2 id="关系映射实体类"><a href="#关系映射实体类" class="headerlink" title="关系映射实体类"></a>关系映射实体类</h2><p>像使用 <code>MyBatisPlus</code> 那样，我们需要先创建一个 <code>关系映射实体类</code>，目的是告诉 Spring，服务启动时你把哪些配置项的值给我塞到这个实体类中。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.zyan.test.pojo.properties;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.NestedConfigurationProperty;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String aProperty;<br><br>    <span class="hljs-keyword">private</span> String b;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Boolean</span> <span class="hljs-variable">enable</span> <span class="hljs-operator">=</span> Boolean.FALSE;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>需要注意这个实体类必须包含 <code>Setter</code> 和 <code>Getter</code> 方法，否则你将取不到值和无法取值。并且这个类必须使用 <code>@Component</code> 注解交由 Spring 管理，或者在服务启动类上使用 <code>@ConfigurationPropertiesScan</code> 注解进行扫描。</p>
-<p><code>@ConfigurationProperties</code> 注解的 <code>prefix</code> 用于指定配置项前缀，可以使用 <code>.</code> 进行多级指定。不能使用驼峰命名，只能使用 <code>-</code> 进行分词。</p>
-<p>可以直接在此类中为属性赋上默认值。</p>
-<h2 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TestProperties testProperties;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test</span><span class="hljs-params">()</span> &#123;<br>         System.out.println(<span class="hljs-string">&quot;配置项 test.enable 取值:&quot;</span> + testProperties.getEnable());<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>将 <code>TestProperties</code> 注入到适当的位置，通过 <code>Getter</code> 方法进行取值。此处使用 <code>@RequiredArgsConstructor</code> 进行构造器注入，想要详细了解使用方法，可阅读 <a href="/2020/10/30/Spring/base/RequiredArgsConstructor/">如何优雅的进行 Bean 注入</a>。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight yml"><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">a-property:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
-
-<p>按照习惯，建议在 <code>.yml</code> 文件中使用 <code>-</code> 进行分词，在实体类中使用驼峰命名，不要担心这样无法取值，<code>Spring</code> 会帮你进行转化，当然，你也可以选择不这么做。</p>
-<h1 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h1><h2 id="多级配置"><a href="#多级配置" class="headerlink" title="多级配置"></a>多级配置</h2><p>多级配置只需要引入静态内部类即可</p>
-<h3 id="映射类写法"><a href="#映射类写法" class="headerlink" title="映射类写法"></a>映射类写法</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Other other;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="yml-文件写法"><a href="#yml-文件写法" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other:</span><br>    <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="列表配置"><a href="#列表配置" class="headerlink" title="列表配置"></a>列表配置</h2><h3 id="映射类写法-1"><a href="#映射类写法-1" class="headerlink" title="映射类写法"></a>映射类写法</h3><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;test&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestProperties</span> &#123;<br><br>    <span class="hljs-keyword">private</span> List&lt;Other&gt; otherList;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Other</span> &#123;<br>        <span class="hljs-keyword">private</span> String a;<br>        <span class="hljs-keyword">private</span> String b;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="yml-文件写法-1"><a href="#yml-文件写法-1" class="headerlink" title="yml 文件写法"></a>yml 文件写法</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">test:</span><br>  <span class="hljs-attr">other-list:</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br>    <span class="hljs-bullet">-</span><br>      <span class="hljs-attr">a:</span> <span class="hljs-string">xxx</span><br>      <span class="hljs-attr">b:</span> <span class="hljs-string">xxx</span><br></code></pre></td></tr></table></figure>]]></content>
+<ul>
+<li><p><code>buildPermissionsTree()</code>方法内使用<code>ObjectUtils.isEmpty(permissions.getParentCod())</code>条件筛选出所有父编码为空的数据，即一级菜单数据。遍历中的<code>setChildren()</code>调用了<code>getPermissionsChildrenList()</code>方法，并传入自身的<code>CODE</code>，去寻找自己的子节点。</p>
+</li>
+<li><p><code>getPermissionsChildrenList()</code>方法内使用递归不断的向下查找，直至<code>filter</code>后再无数据，便停止递归，进入下一次遍历。</p>
+</li>
+</ul>
+]]></content>
       <categories>
-        <category>Spring</category>
+        <category>Java</category>
       </categories>
       <tags>
-        <tag>Spring 相关</tag>
+        <tag>Java 基础</tag>
       </tags>
   </entry>
   <entry>
@@ -495,76 +565,6 @@
 
 <p>运行结果</p>
 <figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">99</span>.<span class="hljs-number">123</span><br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java 基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>将List转换为树形结构</title>
-    <url>/2022/08/19/Java/JavaBase/ConvertListToTree/</url>
-    <content><![CDATA[<p>在 Java 中，把<code>List</code> 转换为多级的树形结构非常常见。例如菜单数据是在数据库中“平铺”存储的，在做查询时，需要将其转换为树形结构，方便前端进行展示。</p>
-<p>本文就以菜单作为案例，读者可以举一反三，实现自己的需求</p>
-<h1 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h1><p>将其命名为<code>PERMISSIONS</code></p>
-<table>
-<thead>
-<tr>
-<th align="left">字段名</th>
-<th align="left">类型</th>
-<th align="left">注释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">CODE</td>
-<td align="left">varchar</td>
-<td align="left">编码(主键)</td>
-</tr>
-<tr>
-<td align="left">PARENT_CODE</td>
-<td align="left">varchar</td>
-<td align="left">父编码</td>
-</tr>
-<tr>
-<td align="left">NAME</td>
-<td align="left">varchar</td>
-<td align="left">名称</td>
-</tr>
-<tr>
-<td align="left">TYPE</td>
-<td align="left">tinyint</td>
-<td align="left">类型 0菜单 1按钮 2接口</td>
-</tr>
-<tr>
-<td align="left">URL</td>
-<td align="left">varchar</td>
-<td align="left">前端路由或后端接口路由</td>
-</tr>
-<tr>
-<td align="left">CREATE_TIME</td>
-<td align="left">datetime</td>
-<td align="left">创建时间</td>
-</tr>
-<tr>
-<td align="left">UPDATE_TIME</td>
-<td align="left">datetime</td>
-<td align="left">更新时间</td>
-</tr>
-</tbody></table>
-<h1 id="Java-处理"><a href="#Java-处理" class="headerlink" title="Java 处理"></a>Java 处理</h1><p>假设我们此时已经查询出一个列表<code>List&lt;Permissions&gt;</code>，<code>Permissions</code>类是与数据库对应的实体类，包含了<code>PERMISSIONS</code>表的所有字段，此刻就需要对其进行树形结构处理。</p>
-<h2 id="树形结构实体类"><a href="#树形结构实体类" class="headerlink" title="树形结构实体类"></a>树形结构实体类</h2><p>首先我们需要一个包含自身的树形结构实体类</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 权限树内容</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@EqualsAndHashCode(callSuper = true)</span><br><span class="hljs-meta">@ApiModel(description = &quot;权限树内容&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PermissionsTreeRes</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Permissions</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">3107598961006613967L</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 权限树</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ApiModelProperty(&quot;权限树&quot;)</span><br>    <span class="hljs-keyword">private</span> List&lt;PermissionsTreeRes&gt; children;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p><code>PermissionsTreeRes</code>继承了<code>Permissions</code>，即拥有了数据库表中的所有字段。其自身又包含了类型为<code>List&lt;PermissionsTreeRes&gt;</code>的<code>children</code>属性，即子节点。</p>
-<h2 id="代码处理"><a href="#代码处理" class="headerlink" title="代码处理"></a>代码处理</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> List&lt;PermissionsTreeRes&gt; <span class="hljs-title function_">buildPermissionsTree</span><span class="hljs-params">(List&lt;Permissions&gt; permissionsList)</span> &#123;<br>    <span class="hljs-keyword">return</span> permissionsList.stream().filter(permissions -&gt; ObjectUtils.isEmpty(permissions.getParentCod()))<br>            .map(permissions -&gt; &#123;<br>                <span class="hljs-type">PermissionsTreeRes</span> <span class="hljs-variable">treeRes</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PermissionsTreeRes</span>();<br>                BeanUtils.copyProperties(permissions, treeRes);<br>                treeRes.setChildren(<span class="hljs-built_in">this</span>.getPermissionsChildrenList(permissions.getCode(),permissionsList));<br>                <span class="hljs-keyword">return</span> treeRes;<br>            &#125;).collect(Collectors.toList());<br>&#125;<br><br><span class="hljs-keyword">private</span> List&lt;PermissionsTreeRes&gt; <span class="hljs-title function_">getPermissionsChildrenList</span><span class="hljs-params">(String code, List&lt;Permissions&gt;permissionsList)</span> &#123;<br>    <span class="hljs-keyword">return</span> permissionsList.stream().filter(permissions -&gt; StringUtils.equals(permissions.getParentCode(),code))<br>            .map(permissions -&gt; &#123;<br>                <span class="hljs-type">PermissionsTreeRes</span> <span class="hljs-variable">treeRes</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PermissionsTreeRes</span>();<br>                BeanUtils.copyProperties(permissions, treeRes);<br>                treeRes.setChildren(<span class="hljs-built_in">this</span>.getPermissionsChildrenList(permissions.getCode(),permissionsList));<br>                <span class="hljs-keyword">return</span> treeRes;<br>            &#125;).collect(Collectors.toList());<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>buildPermissionsTree()</code>方法内使用<code>ObjectUtils.isEmpty(permissions.getParentCod())</code>条件筛选出所有父编码为空的数据，即一级菜单数据。遍历中的<code>setChildren()</code>调用了<code>getPermissionsChildrenList()</code>方法，并传入自身的<code>CODE</code>，去寻找自己的子节点。</p>
-</li>
-<li><p><code>getPermissionsChildrenList()</code>方法内使用递归不断的向下查找，直至<code>filter</code>后再无数据，便停止递归，进入下一次遍历。</p>
-</li>
-</ul>
-]]></content>
       <categories>
         <category>Java</category>
       </categories>
